@@ -11,7 +11,6 @@ running = True
 while running:
     pygame.display.flip()
     screen.fill((34, 25, 14))
-    pygame.time.delay(150)
     screen.blit(menuTitle, (25, -170))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
