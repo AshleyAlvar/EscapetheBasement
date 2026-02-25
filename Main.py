@@ -37,9 +37,9 @@ quit_button = Button(Button_Color, 500, 400, 200, 100, 'Quit', None)
 running = True
 while running:
     pygame.display.flip()
-    screen.fill((34, 25, 14)
-    screen.blit(menuTitle, (25, -170))
+    screen.fill((34, 25, 14))
     screen.blit(menuBackground,(0,0))
+    screen.blit(menuTitle, (25, -170))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
