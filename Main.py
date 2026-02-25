@@ -6,6 +6,8 @@ pygame.init()
 pygame.display.set_caption("Escape the Basement")
 screen = pygame.display.set_mode((1000, 700))
 menuTitle = pygame.image.load('EtBTitle.png')
+menuBackground = pygame.image.load('basement-2.v1.jpg')
+
 Button_Color = (100, 100, 100)
 Button_hover_color = (150, 150, 150)
 font = pygame.font.Font(None, 40)
@@ -35,8 +37,9 @@ quit_button = Button(Button_Color, 500, 400, 200, 100, 'Quit', None)
 running = True
 while running:
     pygame.display.flip()
-    screen.fill((34, 25, 14))
+    screen.fill((34, 25, 14)
     screen.blit(menuTitle, (25, -170))
+    screen.blit(menuBackground,(0,0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
