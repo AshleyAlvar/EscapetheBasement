@@ -26,12 +26,12 @@ def displayMenu():
     pygame.display.flip()
 
 running = True
-displayMenu()
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     pygame.display.update()
+    displayMenu()
 
     if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
@@ -40,6 +40,11 @@ while running:
                 elif quit_button.is_clicked(event.pos):
                     running = False
                     print("Quitting game...")
+
+            while play_button.is_clicked(event.pos):
+                print("Play button clicked!")
+                break
+                
 
     mouse_pos = pygame.mouse.get_pos()
     if play_button.is_clicked(mouse_pos):
