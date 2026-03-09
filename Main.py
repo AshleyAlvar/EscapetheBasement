@@ -1,13 +1,22 @@
 import pygame
-import os
 from Button import Button
+from Button import Image_Button
 
 pygame.init()
 
-pygame.display.set_caption("Escape the Basement")
 screen = pygame.display.set_mode((1000, 700))
+pygame.display.set_caption("Escape the Basement")
 menuTitle = pygame.image.load('EtBTitle.png')
 menuBackground = pygame.image.load('basement-2.v1.jpg')
+
+volume_on = pygame.image.load('volumeon.png').convert_alpha()
+volume_off = pygame.image.load('volumeoff.png').convert_alpha()
+volumeButton = Image_Button(25, 600, volume_on, 0.15)
+volumeOff_Button = Image_Button(25, 600, volume_off, 0.15)
+current_Volume = volume_on
+pygame.mixer.music.load('universfield-ominous-tones.mp3')
+pygame.mixer.music.play(-1, 0.0, 0)
+
 
 Button_Color = ('red')
 Button_hover_color = ('blue')
@@ -23,6 +32,9 @@ def displayMenu():
 
     play_button.draw(screen, font)
     quit_button.draw(screen, font)
+
+    volumeButton.draw()
+
     pygame.display.flip()
 
 running = True
@@ -32,6 +44,13 @@ while running:
             running = False
     pygame.display.update()
     displayMenu()
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.button == 1:
+            if volumeButton.is_clicked(event.pos):
+                pygame.mixer.music.pause()
+            else:
+                pygame.mixer.music.unpause()
 
     if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
