@@ -25,17 +25,16 @@ play_button = Button(Button_Color, 300, 400, 200, 100, 'Play', None)
 quit_button = Button(Button_Color, 500, 400, 200, 100, 'Quit', None)
 
 def displayMenu():
-    pygame.display.flip()
-    screen.fill((34, 25, 14))
-    screen.blit(menuBackground,(0,0))
-    screen.blit(menuTitle, (25, -170))
-
     play_button.draw(screen, font)
     quit_button.draw(screen, font)
-
     volumeButton.draw()
-
     pygame.display.flip()
+
+# the screen should only be updated when it needs to be; no need to update it every frame
+screen.fill((34, 25, 14))
+screen.blit(menuBackground,(0,0))
+screen.blit(menuTitle, (25, -170))
+pygame.display.flip()
 
 running = True
 while running:
