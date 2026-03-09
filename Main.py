@@ -12,8 +12,8 @@ menuBackground = pygame.image.load('basement-2.v1.jpg')
 volume_on = pygame.image.load('volumeon.png').convert_alpha()
 volume_off = pygame.image.load('volumeoff.png').convert_alpha()
 volumeButton = Image_Button(25, 600, volume_on, 0.15)
-volumeOff_Button = Image_Button(25, 600, volume_off, 0.15)
 current_Volume = volume_on
+
 pygame.mixer.music.load('universfield-ominous-tones.mp3')
 pygame.mixer.music.play(-1, 0.0, 0)
 
@@ -31,12 +31,18 @@ def displayMenu():
     pygame.display.flip()
 
 # the screen should only be updated when it needs to be; no need to update it every frame
-screen.fill((34, 25, 14))
-screen.blit(menuBackground,(0,0))
-screen.blit(menuTitle, (25, -170))
-pygame.display.flip()
+def updateScreen():
+    screen.fill((34, 25, 14))
+    screen.blit(menuBackground,(0,0))
+    screen.blit(menuTitle, (25, -170))
+    pygame.display.flip()
+
+updateScreen()
 
 running = True
+mouseDown = False
+musicPaused = False
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -45,24 +51,30 @@ while running:
     displayMenu()
 
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if event.button == 1:
+        if mouseDown == False and event.button == 1:
+            # volume button
             if volumeButton.is_clicked(event.pos):
-                pygame.mixer.music.pause()
-            else:
-                pygame.mixer.music.unpause()
-
-    if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                if play_button.is_clicked(event.pos):
-                    play_button.action()
-                elif quit_button.is_clicked(event.pos):
-                    running = False
-                    print("Quitting game...")
-
-            while play_button.is_clicked(event.pos):
-                print("Play button clicked!")
+                musicPaused = not musicPaused
+                updateScreen()
+                if musicPaused == True:
+                    volumeButton.new_image(volume_off)
+                    pygame.mixer.music.pause()
+                    current_Volume = volume_off
+                else:
+                    volumeButton.new_image(volume_on)
+                    pygame.mixer.music.unpause()
+                    current_Volume = volume_on
+            # play button
+            if play_button.is_clicked(event.pos):
+                play_button.action()
+            elif quit_button.is_clicked(event.pos):
+                running = False
+                print("Quitting game...")
                 break
-                
+        
+        mouseDown = True
+    elif event.type == pygame.MOUSEBUTTONUP:
+        mouseDown = False
 
     mouse_pos = pygame.mouse.get_pos()
     if play_button.is_clicked(mouse_pos):

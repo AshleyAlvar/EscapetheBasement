@@ -19,12 +19,14 @@ class Button:
         return self.rect.collidepoint(pos)
     
 screen = pygame.display.set_mode((1000, 700))
+var = "test"
 
 class Image_Button:
     def __init__(self, x, y, image, scale):
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        self.scale = scale
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
@@ -43,3 +45,10 @@ class Image_Button:
 
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
+    
+    def new_image(self, image):
+        width = image.get_width()
+        height = image.get_height()
+        scale = self.scale
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        screen.blit(self.image, (self.rect.x, self.rect.y))
