@@ -43,51 +43,56 @@ running = True
 mouseDown = False
 musicPaused = False
 
+gameState = "Menu"
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
     pygame.display.update()
     displayMenu()
 
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if mouseDown == False and event.button == 1:
-            # volume button
-            if volumeButton.is_clicked(event.pos):
-                musicPaused = not musicPaused
-                updateScreen()
-                if musicPaused == True:
-                    volumeButton.new_image(volume_off)
-                    pygame.mixer.music.pause()
-                    current_Volume = volume_off
-                else:
-                    volumeButton.new_image(volume_on)
-                    pygame.mixer.music.unpause()
-                    current_Volume = volume_on
-            # play button
-            if play_button.is_clicked(event.pos):
-                play_button.action()
-            elif quit_button.is_clicked(event.pos):
-                running = False
-                print("Quitting game...")
-                break
+    if gameState == "Menu":
         
-        mouseDown = True
-    elif event.type == pygame.MOUSEBUTTONUP:
-        mouseDown = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if mouseDown == False and event.button == 1:
+                # volume button
+                if volumeButton.is_clicked(event.pos):
+                    musicPaused = not musicPaused
+                    updateScreen()
+                    if musicPaused == True:
+                        volumeButton.new_image(volume_off)
+                        pygame.mixer.music.pause()
+                        current_Volume = volume_off
+                    else:
+                        volumeButton.new_image(volume_on)
+                        pygame.mixer.music.unpause()
+                        current_Volume = volume_on
+                # play button
+                if play_button.is_clicked(event.pos):
+                    play_button.action()
+                elif quit_button.is_clicked(event.pos):
+                    running = False
+                    print("Quitting game...")
+                    break
+            
+            mouseDown = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            mouseDown = False
 
-    mouse_pos = pygame.mouse.get_pos()
-    if play_button.is_clicked(mouse_pos):
-        current_button_color = Button_hover_color
-    else:        
-        current_button_color = Button_Color
+        mouse_pos = pygame.mouse.get_pos()
+        if play_button.is_clicked(mouse_pos):
+            current_button_color = Button_hover_color
+        else:        
+            current_button_color = Button_Color
 
-    if quit_button.is_clicked(mouse_pos):
-        current_quit_button_color = Button_hover_color
-    else:
-        current_quit_button_color = Button_Color
+        if quit_button.is_clicked(mouse_pos):
+            current_quit_button_color = Button_hover_color
+        else:
+            current_quit_button_color = Button_Color
 
-    play_button.color = current_button_color
-    quit_button.color = current_quit_button_color
+        play_button.color = current_button_color
+        quit_button.color = current_quit_button_color
 
 pygame.quit()
