@@ -4,10 +4,14 @@ from Button import Image_Button
 
 pygame.init()
 
-screen = pygame.display.set_mode((1000, 700))
+screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Escape the Basement")
 menuTitle = pygame.image.load('EtBTitle.png')
+
 menuBackground = pygame.image.load('basement-2.v1.jpg')
+gameBackground = pygame.image.load('placeholder.jpg') # there will be more on this later
+
+current_background = menuBackground
 
 volume_on = pygame.image.load('volumeon.png').convert_alpha()
 volume_off = pygame.image.load('volumeoff.png').convert_alpha()
@@ -21,20 +25,22 @@ pygame.mixer.music.play(-1, 0.0, 0)
 Button_Color = ('red')
 Button_hover_color = ('blue')
 font = pygame.font.Font(None, 40)
-play_button = Button(Button_Color, 300, 400, 200, 100, 'Play', None)
-quit_button = Button(Button_Color, 500, 400, 200, 100, 'Quit', None)
+play_button = Button(Button_Color, 430, 400, 200, 100, 'Play', None)
+quit_button = Button(Button_Color, 650, 400, 200, 100, 'Quit', None)
 
-def displayMenu():
-    play_button.draw(screen, font)
-    quit_button.draw(screen, font)
+def displayMenu(gameState):
+    if gameState == "Menu":
+        play_button.draw(screen, font)
+        quit_button.draw(screen, font)
     volumeButton.draw()
     pygame.display.flip()
 
 # the screen should only be updated when it needs to be; no need to update it every frame
 def updateScreen():
     screen.fill((34, 25, 14))
-    screen.blit(menuBackground,(0,0))
-    screen.blit(menuTitle, (25, -170))
+    screen.blit(current_background,(0,0))
+    if current_background == menuBackground:
+        screen.blit(menuTitle, (150, -170))
     pygame.display.flip()
 
 updateScreen()
@@ -51,7 +57,7 @@ while running:
             running = False
 
     pygame.display.update()
-    displayMenu()
+    displayMenu(gameState)
 
     if gameState == "Menu":
         
@@ -71,6 +77,8 @@ while running:
                         current_Volume = volume_on
                 # play button
                 if play_button.is_clicked(event.pos):
+                    current_background = gameBackground
+                    updateScreen()
                     gameState = "Game"
                     #play_button.action()
                 elif quit_button.is_clicked(event.pos):
@@ -98,7 +106,25 @@ while running:
 
     elif gameState == "Game":
         # nothing at all for now
-        print("test")
+        if event.type == pygame.MOUSEBUTTONDOWN: # blatant copy and paste; we'll sort this out later
+            if mouseDown == False and event.button == 1:
+                # volume button
+                if volumeButton.is_clicked(event.pos):
+                    musicPaused = not musicPaused
+                    updateScreen()
+                    if musicPaused == True:
+                        volumeButton.new_image(volume_off)
+                        pygame.mixer.music.pause()
+                        current_Volume = volume_off
+                    else:
+                        volumeButton.new_image(volume_on)
+                        pygame.mixer.music.unpause()
+                        current_Volume = volume_on
+            
+            mouseDown = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            mouseDown = False
+
         mouse_pos = pygame.mouse.get_pos()
 
 pygame.quit()
