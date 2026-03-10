@@ -71,7 +71,8 @@ while running:
                         current_Volume = volume_on
                 # play button
                 if play_button.is_clicked(event.pos):
-                    play_button.action()
+                    gameState = "Game"
+                    #play_button.action()
                 elif quit_button.is_clicked(event.pos):
                     running = False
                     print("Quitting game...")
@@ -94,5 +95,10 @@ while running:
 
         play_button.color = current_button_color
         quit_button.color = current_quit_button_color
+
+    elif gameState == "Game":
+        # nothing at all for now
+        print("test")
+        mouse_pos = pygame.mouse.get_pos()
 
 pygame.quit()
