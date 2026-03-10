@@ -9,7 +9,6 @@ screen = pygame.display.set_mode((1000, 700))
 pygame.display.set_caption("Escape the Basement")
 menuTitle = pygame.image.load('EtBTitle.png')
 menuBackground = pygame.image.load('basement-2.v1.jpg')
-current_screen = 1
 
 # Create placeholder volume images since files are missing
 volume_on = pygame.Surface((64, 64), pygame.SRCALPHA)
@@ -62,10 +61,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                current_screen = 2
-
     pygame.display.update()
     displayMenu()
 
@@ -94,11 +89,7 @@ while running:
                     break
 
             while play_button.is_clicked(event.pos):
-                if current_screen == 1:
-                    draw_intro()
-                elif current_screen == 2:
-                    game = Game(screen)
-                    game.draw_game()
+                draw_intro()
             
             mouseDown = True
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -117,5 +108,9 @@ while running:
 
         play_button.color = current_button_color
         quit_button.color = current_quit_button_color
+
+    if gameState == "Game":
+        game = Game(screen)
+        game.draw_game()
 
 pygame.quit()
