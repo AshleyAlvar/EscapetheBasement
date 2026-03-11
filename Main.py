@@ -6,25 +6,25 @@ pygame.init()
 
 screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Escape the Basement")
-menuTitle = pygame.image.load('EtBTitle.png')
+menuTitle = pygame.image.load('Images/EtBTitle.png')
 
-menuBackground = pygame.image.load('basement-2.v1.jpg')
-gameBackground = pygame.image.load('placeholder.jpg') # there will be more on this later
+menuBackground = pygame.image.load('Images/basement-2.v1.jpg')
+gameBackground = pygame.image.load('Images/placeholder.jpg') # there will be more on this later
 
 current_background = menuBackground
 
-volume_on = pygame.image.load('volumeon.png').convert_alpha()
-volume_off = pygame.image.load('volumeoff.png').convert_alpha()
+volume_on = pygame.image.load('Images/volumeon.png').convert_alpha()
+volume_off = pygame.image.load('Images/volumeoff.png').convert_alpha()
 volumeButton = Image_Button(25, 625, volume_on, 0.15)
 current_Volume = volume_on
 
-pygame.mixer.music.load('universfield-ominous-tones.mp3')
+pygame.mixer.music.load('Audio/universfield-ominous-tones.mp3')
 pygame.mixer.music.play(-1, 0.0, 0)
 
-settings_icon = pygame.image.load('settings.png').convert_alpha()
-settings_Menu = pygame.image.load('settingMenu.png')
-resume_icon = pygame.image.load('Resume.png').convert_alpha()
-mainMenu = pygame.image.load('MainMenu.png').convert_alpha()
+settings_icon = pygame.image.load('Images/settings.png').convert_alpha()
+settings_Menu = pygame.image.load('Images/settingMenu.png')
+resume_icon = pygame.image.load('Images/Resume.png').convert_alpha()
+mainMenu = pygame.image.load('Images/MainMenu.png').convert_alpha()
 settingsButton = Image_Button(1200, 1, settings_icon, 0.15)
 resumeButton = Image_Button(535, 250, resume_icon, 1)
 mainMenuButton = Image_Button(535, 375, mainMenu, 1)
