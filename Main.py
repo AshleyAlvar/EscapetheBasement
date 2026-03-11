@@ -15,11 +15,19 @@ current_background = menuBackground
 
 volume_on = pygame.image.load('volumeon.png').convert_alpha()
 volume_off = pygame.image.load('volumeoff.png').convert_alpha()
-volumeButton = Image_Button(25, 600, volume_on, 0.15)
+volumeButton = Image_Button(25, 625, volume_on, 0.15)
 current_Volume = volume_on
 
 pygame.mixer.music.load('universfield-ominous-tones.mp3')
 pygame.mixer.music.play(-1, 0.0, 0)
+
+settings_icon = pygame.image.load('settings.png').convert_alpha()
+settings_Menu = pygame.image.load('settingMenu.png')
+resume_icon = pygame.image.load('Resume.png').convert_alpha()
+mainMenu = pygame.image.load('MainMenu.png').convert_alpha()
+settingsButton = Image_Button(1200, 1, settings_icon, 0.15)
+resumeButton = Image_Button(535, 250, resume_icon, 1)
+mainMenuButton = Image_Button(535, 375, mainMenu, 1)
 
 
 Button_Color = ('red')
@@ -32,6 +40,8 @@ def displayMenu(gameState):
     if gameState == "Menu":
         play_button.draw(screen, font)
         quit_button.draw(screen, font)
+    if gameState == "Game":
+        settingsButton.draw()
     volumeButton.draw()
     pygame.display.flip()
 
@@ -42,6 +52,11 @@ def updateScreen():
     if current_background == menuBackground:
         screen.blit(menuTitle, (150, -170))
     pygame.display.flip()
+
+def SettingsMenu():
+    screen.blit(settings_Menu, (500, 150))
+    resumeButton.draw()
+    mainMenuButton.draw()
 
 updateScreen()
 
@@ -65,7 +80,7 @@ while running:
             if mouseDown == False and event.button == 1:
                 # volume button
                 if volumeButton.is_clicked(event.pos):
-                    musicPaused = not musicPaused
+                    musicPaused = not musicPaused     
                     updateScreen()
                     if musicPaused == True:
                         volumeButton.new_image(volume_off)
@@ -106,6 +121,18 @@ while running:
 
     elif gameState == "Game":
         # nothing at all for now
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if mouseDown == False and event.button ==1:
+                if settingsButton.is_clicked(event.pos):
+                    SettingsMenu()
+                if resumeButton.is_clicked(event.pos):
+                    screen.blit(current_background, (0,0))
+                elif mainMenuButton.is_clicked(event.pos):
+                    current_background = menuBackground
+                    gameState = "Menu"
+                    screen.blit(current_background, (0,0))
+                    updateScreen()
+
         if event.type == pygame.MOUSEBUTTONDOWN: # blatant copy and paste; we'll sort this out later
             if mouseDown == False and event.button == 1:
                 # volume button
