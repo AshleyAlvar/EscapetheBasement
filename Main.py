@@ -88,8 +88,13 @@ while running:
                     print("Quitting game...")
                     break
 
-            while play_button.is_clicked(event.pos):
-                draw_intro()
+                while play_button.is_clicked(event.pos):
+                    draw_intro()
+
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_RETURN:
+                            gameState = "Game"
+                            break
             
             mouseDown = True
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -112,5 +117,11 @@ while running:
     if gameState == "Game":
         game = Game(screen)
         game.draw_game()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                gameState = "Menu"
+
+        mouse_pos = pygame.mouse.get_pos()
 
 pygame.quit()
