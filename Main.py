@@ -36,6 +36,13 @@ font = pygame.font.Font(None, 40)
 play_button = Button(Button_Color, 430, 400, 200, 100, 'Play', None)
 quit_button = Button(Button_Color, 650, 400, 200, 100, 'Quit', None)
 
+def draw_intro():
+    screen.fill('black')
+    intro_text = font.render("You are trapped in a dark basement. Ready to escape?", True, (255, 255, 255))
+    intro_rect = intro_text.get_rect(center=(640, 360))
+    screen.blit(intro_text, intro_rect)
+    pygame.display.flip()
+
 def displayMenu(gameState):
     if gameState == "Menu":
         play_button.draw(screen, font)
@@ -94,6 +101,7 @@ while running:
                 if play_button.is_clicked(event.pos):
                     current_background = gameBackground
                     updateScreen()
+                    draw_intro()
                     gameState = "Game"
                     #play_button.action()
                 elif quit_button.is_clicked(event.pos):
