@@ -1,6 +1,8 @@
 import pygame
 from Button import Button
 from Button import Image_Button
+from IntroScene import IntroScene
+from GameScene import GameScene
 
 pygame.init()
 
@@ -36,40 +38,37 @@ font = pygame.font.Font(None, 40)
 play_button = Button(Button_Color, 430, 400, 200, 100, 'Play', None)
 quit_button = Button(Button_Color, 650, 400, 200, 100, 'Quit', None)
 
-def draw_intro():
-    screen.fill('black')
-    intro_text = font.render("You are trapped in a dark basement. Ready to escape?", True, (255, 255, 255))
-    intro_rect = intro_text.get_rect(center=(640, 360))
-    screen.blit(intro_text, intro_rect)
-    pygame.display.flip()
-
 def displayMenu(gameState):
     if gameState == "Menu":
         play_button.draw(screen, font)
         quit_button.draw(screen, font)
+        volumeButton.draw()
     if gameState == "Game":
         settingsButton.draw()
-    volumeButton.draw()
-    pygame.display.flip()
-
-# the screen should only be updated when it needs to be; no need to update it every frame
-def updateScreen():
-    screen.fill((34, 25, 14))
-    screen.blit(current_background,(0,0))
-    if current_background == menuBackground:
-        screen.blit(menuTitle, (150, -170))
-    pygame.display.flip()
+        volumeButton.draw()
 
 def SettingsMenu():
     screen.blit(settings_Menu, (500, 150))
     resumeButton.draw()
     mainMenuButton.draw()
 
+def updateScreen():
+    screen.fill((34, 25, 14))
+    screen.blit(current_background,(0,0))
+    if current_background == menuBackground:
+        screen.blit(menuTitle, (150, -170))
+
+# the screen should only be updated when it needs to be; no need to update it every frame
+
 updateScreen()
 
 running = True
 mouseDown = False
 musicPaused = False
+
+intro_scene = IntroScene(screen)
+game_scene = GameScene(screen)
+settingsOpen = False
 
 gameState = "Menu"
 
@@ -82,7 +81,7 @@ while running:
     displayMenu(gameState)
 
     if gameState == "Menu":
-        
+        displayMenu(gameState)
         if event.type == pygame.MOUSEBUTTONDOWN:
             if mouseDown == False and event.button == 1:
                 # volume button
@@ -99,10 +98,7 @@ while running:
                         current_Volume = volume_on
                 # play button
                 if play_button.is_clicked(event.pos):
-                    current_background = gameBackground
-                    updateScreen()
-                    draw_intro()
-                    gameState = "Game"
+                    gameState = "Intro"
                     #play_button.action()
                 elif quit_button.is_clicked(event.pos):
                     running = False
@@ -127,8 +123,17 @@ while running:
         play_button.color = current_button_color
         quit_button.color = current_quit_button_color
 
+    elif gameState == "Intro":
+        intro_scene.draw_intro()
+        result = intro_scene.handle_events(event)
+        if result is not None:
+            game_scene = result
+            gameState = "Game"
+
     elif gameState == "Game":
         # nothing at all for now
+        game_scene.draw_game()
+        displayMenu(gameState)
         if event.type == pygame.MOUSEBUTTONDOWN:
             if mouseDown == False and event.button ==1:
                 if settingsButton.is_clicked(event.pos):
@@ -159,7 +164,5 @@ while running:
             mouseDown = True
         elif event.type == pygame.MOUSEBUTTONUP:
             mouseDown = False
-
-        mouse_pos = pygame.mouse.get_pos()
-
+    pygame.display.flip()
 pygame.quit()
