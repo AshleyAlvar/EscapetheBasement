@@ -115,8 +115,7 @@ def handle_menu_events(event):
                 toggle_volume()
             elif play_button.is_clicked(event.pos):
                 Click()
-                gameState = "Game"
-                current_background = gameBackground
+                gameState = "Intro"
             elif quit_button.is_clicked(event.pos):
                 Click()
                 running = False
@@ -164,6 +163,12 @@ while running:
             running = False
         if gameState == "Menu":
             handle_menu_events(event)
+        elif gameState == "Intro":
+            new_scene = intro_scene.handle_events(event)
+            if new_scene:
+                game_scene = new_scene
+                gameState = "Game"
+                current_background = gameBackground
         elif gameState == "Game":
             handle_game_events(event)
    
