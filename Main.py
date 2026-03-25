@@ -103,6 +103,8 @@ game_scene = GameScene(screen)
 
 gameState = "Menu"
 
+# handlers
+
 def handle_menu_events(event):
     global running, mouseDown, gameState, current_background
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -143,11 +145,15 @@ def handle_game_events(event):
         mouseDown = True
     elif event.type == pygame.MOUSEBUTTONUP:
         mouseDown = False
+
 def update_hover():
     mouse_pos = pygame.mouse.get_pos()
     if gameState == "Menu":
         play_button.color = Button_hover_color if play_button.is_clicked(mouse_pos) else Button_Color
         quit_button.color = Button_hover_color if quit_button.is_clicked(mouse_pos) else Button_Color
+
+# main loop
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
