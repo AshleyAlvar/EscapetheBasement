@@ -1,8 +1,8 @@
 import pygame
 from Button import Button
 from Button import Image_Button
-from IntroScene import IntroScene
-from GameScene import GameScene
+from IntroScene import Intro
+from GameScene import Game
 from Inventory import Hotbar
 
 
@@ -44,6 +44,7 @@ play_button = Button(Button_Color, 430, 400, 200, 100, 'Play', None)
 quit_button = Button(Button_Color, 650, 400, 200, 100, 'Quit', None)
 
 hotbar = Hotbar(500, 600, 64, 5, slot_img)
+frame_rate = 60
 
 def Click():
     mouseClick.play()
@@ -98,8 +99,8 @@ musicPaused = False
 settingsOpen = False
 gameState = "Menu"
 
-intro_scene = IntroScene(screen)
-game_scene = GameScene(screen)
+intro_scene = Intro(screen)
+game_scene = Game(screen)
 
 gameState = "Menu"
 
@@ -155,6 +156,7 @@ def update_hover():
 # main loop
 
 while running:
+    delta_time_ms = clock.tick(frame_rate)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -176,6 +178,5 @@ while running:
         SettingsMenu()
 
     pygame.display.flip()
-    clock.tick(60)
 
 pygame.quit()

@@ -1,7 +1,7 @@
 import pygame
-from GameScene import GameScene
+from GameScene import Game
 
-class IntroScene:
+class Intro:
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 40)
@@ -10,7 +10,7 @@ class IntroScene:
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                return GameScene(self.screen)
+                return Game(self.screen)
         return None
     
     def draw_intro(self):
