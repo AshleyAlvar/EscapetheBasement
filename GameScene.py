@@ -5,8 +5,8 @@ import Interactions
 class Scene:
     def __init__(self, /,*, background):
         self.background = background
-        self.interactions = {}
-        self.items = {}
+        self.interactions = []
+        self.items = []
 
 class Game:
 
@@ -38,3 +38,16 @@ class Game:
             return
         self.scene = self.scenes[scene]
         self.draw_game()
+
+    #
+
+    def clicked(self, pos):
+        print(pos) # debug
+        for interact in self.scene.interactions:
+            if interact.is_clicked(pos):
+                print("clicked!")
+                if interact.type == "Transition":
+                    scene = self.scenes[interact.scene]
+                    self.switch_scene(scene)
+                break
+

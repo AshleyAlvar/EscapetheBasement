@@ -143,6 +143,8 @@ def handle_game_events(event):
                     settingsOpen = False
                     gameState = "Menu"
                     current_background = menuBackground
+            else:
+                game_scene.clicked(event.pos)
         mouseDown = True
     elif event.type == pygame.MOUSEBUTTONUP:
         mouseDown = False
