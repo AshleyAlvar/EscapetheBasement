@@ -18,7 +18,7 @@ class Button:
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
     
-screen = pygame.display.set_mode((1000, 700))
+screen = pygame.display.set_mode((1280, 720))
 var = "test"
 
 class Image_Button:

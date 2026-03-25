@@ -1,13 +1,12 @@
 import pygame
 from Inventory import Hotbar
-
+import Interactions
 
 class Scene:
     def __init__(self, /,*, background):
         self.background = background
         self.interactions = {}
         self.items = {}
-
 
 class Game:
 
