@@ -4,6 +4,7 @@ from Button import Image_Button
 from IntroScene import Intro
 from GameScene import Game
 from Inventory import Hotbar
+from Inventory import Item
 
 
 pygame.init()
@@ -43,13 +44,19 @@ font = pygame.font.Font(None, 40)
 play_button = Button(Button_Color, 430, 400, 200, 100, 'Play', None)
 quit_button = Button(Button_Color, 650, 400, 200, 100, 'Quit', None)
 
-hotbar = Hotbar(500, 600, 64, 5, slot_img)
+hotbar = Hotbar(400, 600, 64, 6, slot_img)
 frame_rate = 60
 
-def Click():
+key_img = pygame.image.load('Images/key.png')
+key = Item(600, 500, key_img, 0.2)
+key2 = Item(800, 500, key_img, 0.2)
+
+game_items = [key, key2]
+
+def click():
     mouseClick.play()
 
-def SettingsMenu():
+def settingsMenu():
     overlay = pygame.Surface((1280, 720))
     overlay.set_alpha(150)
     overlay.fill((0, 0, 0))
@@ -69,6 +76,9 @@ def displayMenu():
         settingsButton.draw()
         volumeButton.draw()
         hotbar.draw(screen)
+        key.draw(screen)
+        key2.draw(screen)
+
 
 def toggle_volume():
     global musicPaused, current_Volume
@@ -111,13 +121,13 @@ def handle_menu_events(event):
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
         if not mouseDown:
             if volumeButton.is_clicked(event.pos):
-                Click()
+                click()
                 toggle_volume()
             elif play_button.is_clicked(event.pos):
-                Click()
+                click()
                 gameState = "Intro"
             elif quit_button.is_clicked(event.pos):
-                Click()
+                click()
                 running = False
         mouseDown = True
     elif event.type == pygame.MOUSEBUTTONUP:
@@ -128,17 +138,17 @@ def handle_game_events(event):
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
         if not mouseDown:
             if volumeButton.is_clicked(event.pos):
-                Click()
+                click()
                 toggle_volume()
             elif settingsButton.is_clicked(event.pos):
-                Click()
+                click()
                 settingsOpen = not settingsOpen
             elif settingsOpen:
                 if resumeButton.is_clicked(event.pos):
-                    Click()
+                    click()
                     settingsOpen = False
                 elif mainMenuButton.is_clicked(event.pos):
-                    Click()
+                    click()
                     settingsOpen = False
                     gameState = "Menu"
                     current_background = menuBackground
@@ -171,6 +181,19 @@ while running:
                 current_background = gameBackground
         elif gameState == "Game":
             handle_game_events(event)
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            mouse_pos = event.pos
+            clicked_something = False
+            for item in game_items:
+                if not item.collected and item.is_clicked(mouse_pos):
+                    if hotbar.add_item(item):
+                        item.collected = True
+                    clicked_something = True
+                    break
+            if not clicked_something:
+                hotbar.handle_click(mouse_pos)
+        
    
     updateScreen()
     if gameState == "Intro":
@@ -182,7 +205,7 @@ while running:
     update_hover()
 
     if settingsOpen:
-        SettingsMenu()
+        settingsMenu()
 
     pygame.display.flip()
 

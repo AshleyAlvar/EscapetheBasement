@@ -1,8 +1,11 @@
 import pygame
 
 class Item:
-    def __init__(self, x, y, image):
-        self.image = image
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        self.scale = scale
         self.rect = self.image.get_rect(topleft=(x, y))
         self.collected = False
 
@@ -23,14 +26,13 @@ class InventorySlot:
         if self.slot_img:
             scaled_slot = pygame.transform.scale(self.slot_img, (self.rect.width, self.rect.height))
             screen.blit(scaled_slot, self.rect.topleft)
-        else:
-            pygame.draw.rect(screen, (120,120,120), self.rect, 2)
+
 
         if self.item:
             padding = 4
             scaled_item = pygame.transform.scale(
                 self.item.image,
-                (self.rect.width - 2*padding, self.rect.height - 2*padding)
+                (self.rect.width - 4*padding, self.rect.height - 4*padding)
             )
             screen.blit(scaled_item, (self.rect.x + padding, self.rect.y + padding))
 
@@ -41,6 +43,28 @@ class Hotbar:
             slot_x = x + i * (slot_size + 10)
             self.slots.append(InventorySlot(slot_x, y, slot_size, slot_img))
 
+        self.selected_index = None
+    
+    def handle_click(self, mouse_pos):
+        for i, slot in enumerate(self.slots):
+            if slot.rect.collidepoint(mouse_pos):
+                self.selected_index = i if self.selected_index != i else None
+    
+    def get_selected_item(self):
+        if self.selected_index is not None:
+            return self.slots[self.selected_index].item
+        return None
+
     def draw(self, screen):
-        for slot in self.slots:
+        for i, slot in enumerate(self.slots):
             slot.draw(screen)
+            if i == self.selected_index and slot.item is not None:
+                pygame.draw.rect(screen, (255, 255, 0), slot.rect, 3)
+
+    def add_item(self, item):  
+        for slot in self.slots:
+            if slot.item is None:
+                slot.item = item
+                return True
+        return False
+    
