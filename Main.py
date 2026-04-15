@@ -5,6 +5,7 @@ from IntroScene import Intro
 from GameScene import Game
 from Inventory import Hotbar
 from Inventory import Item
+from EndingScene import Ending
 
 
 pygame.init()
@@ -111,7 +112,7 @@ gameState = "Menu"
 
 intro_scene = Intro(screen)
 game_scene = Game(screen)
-
+ending_scene = Ending(screen)
 gameState = "Menu"
 
 # handlers
@@ -181,6 +182,12 @@ while running:
                 current_background = gameBackground
         elif gameState == "Game":
             handle_game_events(event)
+        elif gameState == "Ending":
+            new_scene = ending_scene.handle_events(event)
+            if new_scene:
+                game_scene = new_scene
+                gameState = "Game"
+                current_background = gameBackground
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             mouse_pos = event.pos
@@ -200,6 +207,9 @@ while running:
         intro_scene.draw_intro()
     elif gameState == "Game":
         game_scene.draw_game()
+    elif gameState == "Ending":
+        ending_scene.draw_ending()
+
 
     displayMenu()
     update_hover()
