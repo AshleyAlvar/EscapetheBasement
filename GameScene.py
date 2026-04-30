@@ -24,7 +24,7 @@ class Game:
 
         self.hotbar = Hotbar(500, 600, 64, 5)
 
-    def draw_game(self):
+    def draw_game(self, delta_time_ms):
         self.screen.fill((34, 25, 14))
         self.screen.blit(self.scene.background, (0, 0))
 
