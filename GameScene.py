@@ -8,12 +8,24 @@ class Scene:
         self.interactions = []
         self.items = []
 
+    def change_bg(self, background):
+        self.background = background
+
 class Game:
 
     # class variable
     scenes = {
         "Front_Room" : Scene(
-            background = pygame.image.load('Images/placeholder.jpg')
+            background = pygame.image.load('Images/Scenes/Main1/Scene.png')
+        ),
+        "Right_Room" : Scene(
+            background = pygame.image.load('Images/Scenes/Main2/Scene.png')
+        ),
+        "Back_Room" : Scene(
+            background = pygame.image.load('Images/Scenes/Main3/Scene.png')
+        ),
+        "Left_Room" : Scene(
+            background = pygame.image.load('Images/Scenes/Main4/Scene.png')
         ),
     }
 
@@ -22,7 +34,8 @@ class Game:
         self.font = pygame.font.Font(None, 40)
         self.scene = self.scenes["Front_Room"] # where to draw from specifically
 
-        self.hotbar = Hotbar(500, 600, 64, 5)
+        self.hotbar = Hotbar(525, 680, 64, 6) # img
+        self.variables = dict()
 
     def draw_game(self, delta_time_ms):
         self.screen.fill((34, 25, 14))

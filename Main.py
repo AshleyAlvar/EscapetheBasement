@@ -10,7 +10,7 @@ from EndingScene import Ending
 
 pygame.init()
 
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((1466, 825)) # 1280, 720 (changed size again since all the other scenes were in this resolution)
 pygame.display.set_caption("Escape the Basement")
 menuTitle = pygame.image.load('Images/EtBTitle.png')
 clock = pygame.time.Clock()
@@ -22,7 +22,7 @@ current_background = menuBackground
 
 volume_on = pygame.image.load('Images/volumeon.png').convert_alpha()
 volume_off = pygame.image.load('Images/volumeoff.png').convert_alpha()
-volumeButton = Image_Button(25, 625, volume_on, 0.15)
+volumeButton = Image_Button(20, 825-120, volume_on, 1)
 current_Volume = volume_on
 
 mouseClick = pygame.mixer.Sound('Audio/MouseClick.mp3')
@@ -31,37 +31,39 @@ settings_icon = pygame.image.load('Images/settings.png').convert_alpha()
 settings_Menu = pygame.image.load('Images/settingMenu.png')
 resume_icon = pygame.image.load('Images/Resume.png').convert_alpha()
 mainMenu = pygame.image.load('Images/MainMenu.png').convert_alpha()
-settingsButton = Image_Button(1200, 1, settings_icon, 0.15)
-resumeButton = Image_Button(535, 250, resume_icon, 1)
-mainMenuButton = Image_Button(535, 375, mainMenu, 1)
+settingsButton = Image_Button(1466-120, 10, settings_icon, 1)
+resumeButton = Image_Button(608, 300, resume_icon, 1)
+mainMenuButton = Image_Button(608, 425, mainMenu, 1)
 
 slot_img = pygame.image.load('Images/hotbarslot.png')
 
 Button_Color = ('red')
 Button_hover_color = ('blue')
 font = pygame.font.Font(None, 40)
-play_button = Button(Button_Color, 430, 400, 200, 100, 'Play', None)
-quit_button = Button(Button_Color, 650, 400, 200, 100, 'Quit', None)
+play_button = Button(Button_Color, 633-125, 460, 200, 100, 'Play', None)
+quit_button = Button(Button_Color, 633+125, 460, 200, 100, 'Quit', None)
 
-hotbar = Hotbar(400, 600, 64, 6, slot_img)
+hotbar = Hotbar(525, 680, 64, 6, slot_img)
 frame_rate = 60
 
+"""
 key_img = pygame.image.load('Images/key.png')
 key = Item(600, 500, key_img, 0.2)
 key2 = Item(800, 500, key_img, 0.2)
+"""
 
-game_items = [key, key2]
+game_items = [] # [key, key2]
 
 def click():
     mouseClick.play()
 
 def settingsMenu():
-    overlay = pygame.Surface((1280, 720))
+    overlay = pygame.Surface((1466, 825))
     overlay.set_alpha(150)
     overlay.fill((0, 0, 0))
     screen.blit(overlay, (0, 0))
 
-    screen.blit(settings_Menu, (500, 150))
+    screen.blit(settings_Menu, (573, 200))
     resumeButton.draw()
     mainMenuButton.draw()
 
@@ -75,8 +77,8 @@ def displayMenu():
         settingsButton.draw()
         volumeButton.draw()
         hotbar.draw(screen)
-        key.draw(screen)
-        key2.draw(screen)
+        #key.draw(screen)
+        #key2.draw(screen)
 
 def play_music(str):
     str = f'Audio/{str}.ogg'
@@ -104,7 +106,7 @@ def updateScreen():
     screen.fill((34, 25, 14))
     screen.blit(current_background,(0,0))
     if current_background == menuBackground:
-        screen.blit(menuTitle, (150, -170))
+        screen.blit(menuTitle, (0, -125))
 
 updateScreen()
 
