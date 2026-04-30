@@ -25,8 +25,6 @@ volume_off = pygame.image.load('Images/volumeoff.png').convert_alpha()
 volumeButton = Image_Button(25, 625, volume_on, 0.15)
 current_Volume = volume_on
 
-pygame.mixer.music.load('Audio/universfield-ominous-tones.mp3')
-pygame.mixer.music.play(-1, 0.0, 0)
 mouseClick = pygame.mixer.Sound('Audio/MouseClick.mp3')
 
 settings_icon = pygame.image.load('Images/settings.png').convert_alpha()
@@ -80,6 +78,12 @@ def displayMenu():
         key.draw(screen)
         key2.draw(screen)
 
+def play_music(str):
+    str = f'Audio/{str}.ogg'
+    pygame.mixer.music.load(str) # Audio/universfield-ominous-tones.mp3
+    pygame.mixer.music.play(-1, 0.0, 0)
+
+play_music("MenuTheme")
 
 def toggle_volume():
     global musicPaused, current_Volume
@@ -126,7 +130,8 @@ def handle_menu_events(event):
                 toggle_volume()
             elif play_button.is_clicked(event.pos):
                 click()
-                gameState = "Intro"
+                gameState = "Game" # Intro
+                play_music("GameTheme")
             elif quit_button.is_clicked(event.pos):
                 click()
                 running = False
@@ -153,6 +158,7 @@ def handle_game_events(event):
                     settingsOpen = False
                     gameState = "Menu"
                     current_background = menuBackground
+                    play_music("MenuTheme")
             else:
                 game_scene.clicked(event.pos)
         mouseDown = True
