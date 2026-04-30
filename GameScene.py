@@ -1,33 +1,11 @@
 import pygame
 from Inventory import Hotbar
-import Interactions
-
-class Scene:
-    def __init__(self, /,*, background):
-        self.background = background
-        self.interactions = []
-        self.items = []
-
-    def change_bg(self, background):
-        self.background = background
+import Scenes
 
 class Game:
 
     # class variable
-    scenes = {
-        "Front_Room" : Scene(
-            background = pygame.image.load('Images/Scenes/Main1/Scene.png')
-        ),
-        "Right_Room" : Scene(
-            background = pygame.image.load('Images/Scenes/Main2/Scene.png')
-        ),
-        "Back_Room" : Scene(
-            background = pygame.image.load('Images/Scenes/Main3/Scene.png')
-        ),
-        "Left_Room" : Scene(
-            background = pygame.image.load('Images/Scenes/Main4/Scene.png')
-        ),
-    }
+    scenes = Scenes.Scenes
     slot_img = pygame.image.load('Images/hotbarslot.png')
 
     def __init__(self, screen):
@@ -42,6 +20,13 @@ class Game:
     def draw_game(self, delta_time_ms):
         self.screen.fill((34, 25, 14))
         self.screen.blit(self.scene.background, (0, 0))
+        
+        for overlay in self.scene.overlays:
+            overlay.draw(self.screen)
+        
+        for interact in self.scene.interactions:
+            if interact.visible == True:
+                interact.draw(self.screen)
 
         for item in self.scene.items:
             item.draw(self.screen)

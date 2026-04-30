@@ -6,19 +6,21 @@ class Interaction:
     def __init__(self, x, y, x2, y2):
         self.type = "Default"
         self.rect = pygame.Rect(x, y, x2, y2) # rectangle will not show in the game; only used as to detect clicks
+        self.visible = False
 
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
     
 class Image_Interaction:
     def __init__(self, x, y, image, scale):
-        self.type = "Default"
+        self.type = "Image"
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.scale = scale
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+        self.visible = True
     
     def draw(self, screen):
         action = False
