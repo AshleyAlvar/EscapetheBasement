@@ -43,7 +43,7 @@ font = pygame.font.Font(None, 40)
 play_button = Button(Button_Color, 633-125, 460, 200, 100, 'Play', None)
 quit_button = Button(Button_Color, 633+125, 460, 200, 100, 'Quit', None)
 
-hotbar = Hotbar(525, 680, 64, 6, slot_img)
+#hotbar = Hotbar(525, 680, 64, 6, slot_img)
 frame_rate = 60
 
 """
@@ -76,7 +76,7 @@ def displayMenu():
     elif gameState == "Game":
         settingsButton.draw()
         volumeButton.draw()
-        hotbar.draw(screen)
+        #hotbar.draw(screen)
         #key.draw(screen)
         #key2.draw(screen)
 
@@ -196,20 +196,7 @@ while running:
                 game_scene = new_scene
                 gameState = "Game"
                 current_background = gameBackground
-
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            mouse_pos = event.pos
-            clicked_something = False
-            for item in game_items:
-                if not item.collected and item.is_clicked(mouse_pos):
-                    if hotbar.add_item(item):
-                        item.collected = True
-                    clicked_something = True
-                    break
-            if not clicked_something:
-                hotbar.handle_click(mouse_pos)
-        
-   
+         
     updateScreen()
     if gameState == "Intro":
         intro_scene.draw_intro()
