@@ -16,8 +16,10 @@ class Game:
         self.items = []
         self.hotbar = Hotbar(525, 680, 64, 6, self.slot_img)
         self.variables = dict()
+        self.tick = 0
 
-    def draw_game(self, delta_time_ms):
+    def draw_game(self, delta : float = 0):
+        self.tick += delta
         self.screen.fill((34, 25, 14))
         self.screen.blit(self.scene.background, (0, 0))
         
@@ -33,7 +35,7 @@ class Game:
 
         self.hotbar.draw(self.screen)
 
-    def switch_scene(self, scene):
+    def switch_scene(self, scene: str):
         if not scene in self.scenes:
             return
         self.scene = self.scenes[scene]
@@ -56,10 +58,8 @@ class Game:
         # INTERACTIONS
         for interact in self.scene.interactions:
             if not clicked and interact.is_clicked(pos):
-                print("clicked!")
                 if interact.type == "Transition":
-                    scene = self.scenes[interact.scene]
-                    self.switch_scene(scene)
+                    self.switch_scene(interact.scene)
                     clicked = True
                 break
 

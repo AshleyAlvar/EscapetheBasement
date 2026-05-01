@@ -201,7 +201,7 @@ while running:
     if gameState == "Intro":
         intro_scene.draw_intro()
     elif gameState == "Game":
-        game_scene.draw_game(delta_time_ms)
+        game_scene.draw_game(delta_time_ms / 1000)
     elif gameState == "Ending":
         ending_scene.draw_ending()
 

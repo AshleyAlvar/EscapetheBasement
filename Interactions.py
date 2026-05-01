@@ -1,4 +1,5 @@
 import pygame
+import Scenes
 
 # base classes
 
@@ -46,7 +47,7 @@ class Image_Interaction:
 # derived classes
 
 class Transition(Interaction):
-    def __init__(self, x, y, x2, y2, *, scene):
+    def __init__(self, x, y, x2, y2, *, scene: str):
         super().__init__(x, y, x2, y2)
         self.type = "Transition"
         self.scene = scene # scene name (string)
