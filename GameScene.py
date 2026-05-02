@@ -31,7 +31,7 @@ class TipBar:
         self.text = text
 
     def force_text(self, text):
-        self.forcedText = self.Text
+        self.forcedText = self.text
         self.text = text
 
 
@@ -98,8 +98,8 @@ class Game:
         else:
             pygame.mouse.set_cursor(self.cursors[cursor])
 
-        if self.tipbar.text != text and (self.tipbar.forcedText == None or (self.tipbar.text != self.tipbar.ForcedText and self.tipbar.text != "")):
-            self.tipbar.ForcedText = None
+        if self.tipbar.text != text and (self.tipbar.forcedText == None or (text != self.tipbar.forcedText and text != "")):
+            self.tipbar.forcedText = None
             self.tipbar.change_text(text)
 
     def clicked(self, pos):
@@ -127,6 +127,5 @@ class Game:
         # INTERACTIONS
         for interact in self.scene.interactions:
             if interact.is_clicked(pos) and interact.enabled == True:
-                print("ok")
                 result = interact.mouse_up(self, pos)
                 break
