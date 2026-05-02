@@ -117,7 +117,7 @@ settingsOpen = False
 gameState = "Menu"
 
 intro_scene = Intro(screen)
-game_scene = Game(screen)
+game_scene = Game(screen) # ensure that we can reset this in the future
 ending_scene = Ending(screen)
 gameState = "Menu"
 
@@ -134,6 +134,7 @@ def handle_menu_events(event):
                 click()
                 gameState = "Game" # Intro
                 play_music("GameTheme")
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
             elif quit_button.is_clicked(event.pos):
                 click()
                 running = False
@@ -166,12 +167,22 @@ def handle_game_events(event):
         mouseDown = True
     elif event.type == pygame.MOUSEBUTTONUP:
         mouseDown = False
+    elif event.type == pygame.MOUSEMOTION:
+        if settingsButton.is_clicked(event.pos) or volumeButton.is_clicked(event.pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            game_scene.hover(event.pos)
 
 def update_hover():
-    mouse_pos = pygame.mouse.get_pos()
     if gameState == "Menu":
+        mouse_pos = pygame.mouse.get_pos()
         play_button.color = Button_hover_color if play_button.is_clicked(mouse_pos) else Button_Color
         quit_button.color = Button_hover_color if quit_button.is_clicked(mouse_pos) else Button_Color
+        
+        if play_button.is_clicked(mouse_pos) or quit_button.is_clicked(mouse_pos) or settingsButton.is_clicked(mouse_pos) or volumeButton.is_clicked(mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
 # main loop
 
