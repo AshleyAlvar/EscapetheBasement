@@ -78,7 +78,7 @@ Scenes = {
             "SilverLock" : Overlay(364, 491, pygame.image.load('Images/Scenes/Main1/SilverLock.png'), True),
             "GoldLock" : Overlay(919, 467, pygame.image.load('Images/Scenes/Main1/GoldLock.png'), True),
             "Wire" : Overlay(0, 0, pygame.image.load('Images/Scenes/Main1/Wire.png'), False),
-        }
+        },
     ),
     "Right_Room" : Scene(
         background = pygame.image.load('Images/Scenes/Main2/Scene.png'),
@@ -115,6 +115,10 @@ Scenes = {
                 cursor = "Right",
             ),
         ],
+        overlays = {
+            "GoldLock" : Overlay(0, 0, pygame.image.load('Images/Scenes/Main2/GoldLock.png'), True),
+            "Wire" : Overlay(0, 0, pygame.image.load('Images/Scenes/Main2/Wire.png'), False),
+        },
     ),
     "Back_Room" : Scene(
         background = pygame.image.load('Images/Scenes/Main3/Scene.png'),
@@ -146,6 +150,9 @@ Scenes = {
                 cursor = "Right",
             ),
         ],
+        overlays = {
+            "SilverLock" : Overlay(1165, 519, pygame.image.load('Images/Scenes/Main3/SilverLock.png'), True),
+        },
     ),
     "Left_Room" : Scene(
         background = pygame.image.load('Images/Scenes/Main4/Scene.png'),
@@ -177,6 +184,10 @@ Scenes = {
                 cursor = "Right",
             ),
         ],
+        overlays = {
+            "SilverLock" : Overlay(750, 444, pygame.image.load('Images/Scenes/Main4/SilverLock.png'), True),
+            "GoldLock" : Overlay(1431, 712, pygame.image.load('Images/Scenes/Main4/GoldLock.png'), True),
+        },
     ),
     # SECONDARY
     "Front_Cabinet" : Scene(
@@ -208,12 +219,15 @@ Scenes = {
                 scene = "Laptop",
                 text = "Laptop",
             ),
-            
             Interactions.Transition(0,725,1466,100,
                 scene = "Previous",
                 cursor = "Back",
             ),
         ],
+        overlays = {
+            "GoldLock" : Overlay(731, 449, pygame.image.load('Images/Scenes/Desk/GoldLock.png'), True),
+            "Wire" : Overlay(0, 0, pygame.image.load('Images/Scenes/Desk/Wire.png'), False),
+        },
     ),
     "Safe" : Scene(
         background = pygame.image.load('Images/Scenes/Safe/Scene.png'),
@@ -256,6 +270,9 @@ Scenes = {
                 cursor = "Back",
             ),
         ],
+        overlays = {
+            "Broom" : Overlay(0, 0, pygame.image.load('Images/Scenes/Poster/Broom.png'), True),
+        },
     ),
     "Vent" : Scene(
         background = pygame.image.load('Images/Scenes/Vent/Scene.png'),
