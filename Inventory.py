@@ -1,12 +1,13 @@
 import pygame
 
 class Item:
-    def __init__(self, x, y, image, scale):
+    def __init__(self, x, y, image, scale, *, name):
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.scale = scale
         self.rect = self.image.get_rect(topleft=(x, y))
+        self.name = name
         self.collected = False
 
     def draw(self, screen):
@@ -27,14 +28,14 @@ class InventorySlot:
             scaled_slot = pygame.transform.scale(self.slot_img, (self.rect.width, self.rect.height))
             screen.blit(scaled_slot, self.rect.topleft)
 
-
         if self.item:
-            padding = 4
+            """
             scaled_item = pygame.transform.scale(
                 self.item.image,
-                (self.rect.width - 4*padding, self.rect.height - 4*padding)
+                (self.rect.width, self.rect.height)
             )
-            screen.blit(scaled_item, (self.rect.x + padding, self.rect.y + padding))
+            """
+            screen.blit(self.item.image, (self.rect.x, self.rect.y))
 
 class Hotbar:
     def __init__(self, x, y, slot_size, num_slots, slot_img=None):
@@ -44,11 +45,14 @@ class Hotbar:
             self.slots.append(InventorySlot(slot_x, y, slot_size, slot_img))
 
         self.selected_index = None
+        self.selected = ""
     
     def handle_click(self, mouse_pos):
         for i, slot in enumerate(self.slots):
             if slot.rect.collidepoint(mouse_pos):
                 self.selected_index = i if self.selected_index != i else None
+                self.selected = slot.name if self.selected != slot.name else None
+                break
     
     def get_selected_item(self):
         if self.selected_index is not None:
@@ -67,4 +71,14 @@ class Hotbar:
                 slot.item = item
                 return True
         return False
+
+    def remove_item(self, name): # simply delinks the item rather than delete them; all items are just pre-defined beforehand
+        for slot in self.slots:
+            if slot.item is not None:
+                if slot.item.name == name:
+                    if self.selected == slot.item.name:
+                        self.selected_index = None
+                        self.selected = None
+                    slot.item = None
+                    break
     
