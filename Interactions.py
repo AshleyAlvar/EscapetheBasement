@@ -87,10 +87,9 @@ class Transition(Interaction):
 class Vent_Transition(Transition):
     def __init__(self, x, y, x2, y2, *, scene: str, cursor="Front", text=""):
         super().__init__(x, y, x2, y2, scene = scene, cursor = cursor, text = text)
-        self.locked = True
     
     def mouse_down(self, game, pos):
-        if self.locked == True:
+        if game.variables["Placed_Chair"] == False:
             game.tipbar.force_text("Can't seem to reach the vent from this height. You'll need something to stand on to get there.")
         else:
             game.switch_scene(self.scene)

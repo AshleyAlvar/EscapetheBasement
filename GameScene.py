@@ -48,12 +48,25 @@ class Game:
 
         self.items = []
         self.hotbar = Hotbar(525, 680, 64, 6, self.slot_img)
-        self.variables = dict()
         self.tick = 0
         self.previous = "Front_Room"
         self.has_clicked = []
 
         self.tipbar = TipBar(screen)
+
+        self.variables = {
+            "Placed_Chair" : False,
+            "Gold_Locked" : True,
+            "Silver_Locked" : True,
+            "Vent_Screws" : 4,
+            "Powerbox_Screws" : 4,
+
+            "Safe_Locked" : True,
+            "Safe_Code" : "",
+            
+            "Correct_Code1" : "1227",
+            "Correct_Code2" : "C36926510_DY",
+        }
 
     def draw_game(self, delta : float = 0):
         self.tick += delta
