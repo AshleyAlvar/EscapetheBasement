@@ -26,10 +26,10 @@ class Interaction:
         pass
     
 class Image_Interaction:
-    def __init__(self, x, y, image, scale, *, cursor="", text=""):
+    def __init__(self, x, y, image, scale):
         self.type = "Image"
-        self.cursor = cursor
-        self.text = text
+        self.cursor = ""
+        self.text = ""
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
@@ -106,3 +106,17 @@ class Item_Interaction(Interaction):
     
     def mouse_down(self, game, pos):
         pass
+
+class Safe_Button(Image_Interaction):
+    def __init__(self, x, y, image, scale, *, input, clicked_image):
+        super().__init__(x, y, image, scale)
+        self.cursor = "Hand"
+        self.initial_image = image
+        self.clicked_image = clicked_image
+        self.input = input
+    
+    def mouse_down(self, game, pos):
+        self.new_image(game.screen, image = self.clicked_image)
+
+    def mouse_up(self, game, pos):
+        self.new_image(game.screen, image = self.initial_image)

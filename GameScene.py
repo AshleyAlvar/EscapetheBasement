@@ -51,6 +51,7 @@ class Game:
         self.variables = dict()
         self.tick = 0
         self.previous = "Front_Room"
+        self.has_clicked = []
 
         self.tipbar = TipBar(screen)
 
@@ -119,12 +120,14 @@ class Game:
         for interact in self.scene.interactions:
             if not clicked and interact.is_clicked(pos) and interact.enabled == True:
                 result = interact.mouse_down(self, pos) # sending itself actually works
+                self.has_clicked.append(interact)
                 clicked = True
                 break
 
     def released(self, pos):
         # INTERACTIONS
-        for interact in self.scene.interactions:
-            if interact.is_clicked(pos) and interact.enabled == True:
+        for interact in self.has_clicked: # added so that players wouldn't slide out of said action
+            if interact.enabled == True:
                 result = interact.mouse_up(self, pos)
                 break
+        self.has_clicked.clear()
