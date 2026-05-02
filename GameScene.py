@@ -10,6 +10,26 @@ game_cursors = {
     "Hand" : pygame.SYSTEM_CURSOR_HAND,
 }
 
+class TipBar:
+    def __init__(self, screen):
+        self.screen = screen
+        self.color = 'black'
+        size = 30
+        self.rect = pygame.Rect(0,825-size, 1466,size)
+        self.text = ''
+        self.font = pygame.font.Font(None, 25)
+    
+    def draw(self):
+        pygame.draw.rect(self.screen, self.color, self.rect, 0)
+        if self.text != '':
+            text_surface = self.font.render(self.text, True, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=self.rect.center)
+            self.screen.blit(text_surface, text_rect)
+    
+    def change_text(self, text):
+        self.text = text
+
+
 class Game:
 
     # class variable
@@ -28,6 +48,8 @@ class Game:
         self.tick = 0
         self.previous = "Front_Room"
 
+        self.tipbar = TipBar(screen)
+
     def draw_game(self, delta : float = 0):
         self.tick += delta
         self.screen.fill((34, 25, 14))
@@ -44,6 +66,7 @@ class Game:
             item.draw(self.screen)
 
         self.hotbar.draw(self.screen)
+        self.tipbar.draw()
 
     def switch_scene(self, scene: str):
         if scene == "Previous":
@@ -59,14 +82,19 @@ class Game:
 
     def hover(self, pos):
         cursor = ""
+        text = ""
         for interact in self.scene.interactions:
             if interact.is_clicked(pos) and interact.cursor != "":
                 cursor = interact.cursor
+                text = interact.text
                 break
         if cursor == "":
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         else:
             pygame.mouse.set_cursor(self.cursors[cursor])
+
+        if self.tipbar.text != text:
+            self.tipbar.change_text(text)
 
     def clicked(self, pos):
         print(pos) # debug

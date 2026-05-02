@@ -7,6 +7,7 @@ class Interaction:
     def __init__(self, x, y, x2, y2):
         self.type = "Default"
         self.cursor = ""
+        self.text = ""
         self.rect = pygame.Rect(x, y, x2, y2) # rectangle will not show in the game; only used as to detect clicks
         self.visible = False
 
@@ -14,9 +15,10 @@ class Interaction:
         return self.rect.collidepoint(pos)
     
 class Image_Interaction:
-    def __init__(self, x, y, image, scale, *, cursor=""):
+    def __init__(self, x, y, image, scale, *, cursor="", text=""):
         self.type = "Image"
         self.cursor = cursor
+        self.text = text
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
@@ -49,8 +51,9 @@ class Image_Interaction:
 # derived classes
 
 class Transition(Interaction):
-    def __init__(self, x, y, x2, y2, *, scene: str, cursor="Front"):
+    def __init__(self, x, y, x2, y2, *, scene: str, cursor="Front", text=""):
         super().__init__(x, y, x2, y2)
         self.type = "Transition"
         self.cursor = cursor
+        self.text = text
         self.scene = scene # scene name (string)

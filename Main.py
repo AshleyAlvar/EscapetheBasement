@@ -22,7 +22,7 @@ current_background = menuBackground
 
 volume_on = pygame.image.load('Images/volumeon.png').convert_alpha()
 volume_off = pygame.image.load('Images/volumeoff.png').convert_alpha()
-volumeButton = Image_Button(20, 825-120, volume_on, 1)
+volumeButton = Image_Button(1466-120, 10, volume_on, 1)
 current_Volume = volume_on
 
 mouseClick = pygame.mixer.Sound('Audio/MouseClick.mp3')
@@ -31,7 +31,7 @@ settings_icon = pygame.image.load('Images/settings.png').convert_alpha()
 settings_Menu = pygame.image.load('Images/settingMenu.png')
 resume_icon = pygame.image.load('Images/Resume.png').convert_alpha()
 mainMenu = pygame.image.load('Images/MainMenu.png').convert_alpha()
-settingsButton = Image_Button(1466-120, 10, settings_icon, 1)
+settingsButton = Image_Button(1466-230, 10, settings_icon, 1)
 resumeButton = Image_Button(608, 300, resume_icon, 1)
 mainMenuButton = Image_Button(608, 425, mainMenu, 1)
 
