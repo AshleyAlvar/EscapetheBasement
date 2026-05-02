@@ -46,7 +46,7 @@ class Game:
         self.font = pygame.font.Font(None, 40)
         self.scene = self.scenes["Front_Room"] # where to draw from specifically
 
-        self.items = []
+        self.items = Scenes.Items
         self.hotbar = Hotbar(490, 680, 75, 6, self.slot_img)
         self.tick = 0
         self.previous = "Front_Room"
@@ -80,7 +80,7 @@ class Game:
             if interact.visible == True:
                 interact.draw(self.screen)
 
-        for item in self.scene.items:
+        for key,item in self.items.items():
             item.draw(self.screen)
 
         self.hotbar.draw(self.screen)
@@ -94,6 +94,10 @@ class Game:
         self.scene = self.scenes[scene]
         if self.scene.name != "":
             self.previous = self.scene.name
+
+        for key,item in self.items.items():
+            item.visible = False
+
         self.draw_game()
 
     #
@@ -119,15 +123,17 @@ class Game:
         print(pos) # debug
         # ITEMS
         clicked = False
-        for item in self.items:
-            if not item.collected and item.is_clicked(pos):
+        for key,item in self.items.items():
+            if not item.collected and item.visible and item.is_clicked(pos):
                 if self.hotbar.add_item(item):
                     item.collected = True
                 clicked = True
                 break
         if not clicked:
-            self.hotbar.handle_click(pos)
-            
+            clicked = self.hotbar.handle_click(pos)
+        
+        if clicked:
+            return
         # INTERACTIONS
         result = None
         for interact in self.scene.interactions:

@@ -1,18 +1,31 @@
 import pygame
 
 class Item:
-    def __init__(self, x, y, image, scale, *, name):
+    def __init__(self, x, y, image, scale, *, name, bg_image=None):
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.scale = scale
         self.rect = self.image.get_rect(topleft=(x, y))
         self.name = name
+        
         self.collected = False
+        self.visible = False
+
+        if bg_image != None:
+            width = bg_image.get_width()
+            height = bg_image.get_height()
+            self.bg_image = pygame.transform.scale(bg_image, (int(width), int(height)))
+            self.bg_rect = self.bg_image.get_rect(topleft=(x, y))
+        else:
+            self.bg_image = None
 
     def draw(self, screen):
-        if not self.collected:
-            screen.blit(self.image, self.rect)
+        if not self.collected and self.visible:
+            if self.bg_image != None:
+                screen.blit(self.bg_image, self.bg_rect)
+            else:
+                screen.blit(self.image, self.rect)
 
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
@@ -52,7 +65,8 @@ class Hotbar:
             if slot.rect.collidepoint(mouse_pos):
                 self.selected_index = i if self.selected_index != i else None
                 self.selected = slot.name if self.selected != slot.name else None
-                break
+                return True
+        return False
     
     def get_selected_item(self):
         if self.selected_index is not None:

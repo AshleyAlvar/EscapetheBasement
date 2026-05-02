@@ -1,5 +1,4 @@
 import pygame
-import Scenes
 
 # base classes
 

@@ -1,13 +1,13 @@
 import pygame
 import Interactions
+from Inventory import Item
 
 class Overlay:
     def __init__(self, x, y, image, enabled=True): # no scale needed; size is pre-determined for the sake of the game
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width), int(height)))
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
+        self.rect = self.image.get_rect(topleft=(x, y))
         self.enabled = enabled
 
     def draw(self, screen):
@@ -27,6 +27,41 @@ class Scene:
 
     def change_bg(self, background):
         self.background = background
+
+Items = {
+    "Flathead Screwdriver" : Item(618,362, pygame.image.load("Images/Items/flathead_screwdriver.png").convert_alpha(), 1,
+        name = "Flathead Screwdriver",
+        bg_image = pygame.image.load("Images/Scenes/Cabinet/Screwdriver.png").convert_alpha(),
+    ),
+    "Phillips Screwdriver" : Item(0,0, pygame.image.load("Images/Items/phillips_screwdriver.png").convert_alpha(), 1,
+        name = "Phillips Screwdriver",
+    ),
+    "Hammer" : Item(578,421, pygame.image.load("Images/Items/hammer.png").convert_alpha(), 1,
+        name = "Hammer",
+        bg_image = pygame.image.load("Images/Scenes/Desk/Hammer.png").convert_alpha(),
+    ),
+    "Electric Tape" : Item(610,578, pygame.image.load("Images/Items/tape.png").convert_alpha(), 1,
+        name = "Electric Tape",
+        bg_image = pygame.image.load("Images/Scenes/Desk/Tape.png").convert_alpha(),
+    ),
+    "Laptop Charger" : Item(626,488, pygame.image.load("Images/Items/wire.png").convert_alpha(), 1,
+        name = "Laptop Charger",
+        bg_image = pygame.image.load("Images/Scenes/Cabinet/Wires.png").convert_alpha(),
+    ),
+    "Silver Key" : Item(0,0, pygame.image.load("Images/Items/silverkey.png").convert_alpha(), 1,
+        name = "Silver Key",
+    ),
+    "Gold Key" : Item(712,494, pygame.image.load("Images/Items/goldkey.png").convert_alpha(), 1,
+        name = "Gold Key",
+        bg_image = pygame.image.load("Images/Scenes/Vent/GoldKey.png").convert_alpha(),
+    ),
+    "Chair" : Item(0,0, pygame.image.load("Images/Items/chair.png").convert_alpha(), 1,
+        name = "Chair",
+    ),
+    "Broom" : Item(0,0, pygame.image.load("Images/Items/broom.png").convert_alpha(), 1,
+        name = "Broom",
+    ),
+}
 
 Scenes = {
     # PRIMARY
