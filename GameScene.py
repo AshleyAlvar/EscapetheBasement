@@ -34,7 +34,6 @@ class TipBar:
         self.forcedText = self.text
         self.text = text
 
-
 class Game:
 
     # class variable
@@ -60,7 +59,7 @@ class Game:
         self.screen.fill((34, 25, 14))
         self.screen.blit(self.scene.background, (0, 0))
         
-        for overlay in self.scene.overlays:
+        for key,overlay in self.scene.overlays.items():
             overlay.draw(self.screen)
         
         for interact in self.scene.interactions:

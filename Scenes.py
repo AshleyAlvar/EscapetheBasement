@@ -1,8 +1,24 @@
 import pygame
 import Interactions
 
+class Overlay:
+    def __init__(self, x, y, image, enabled=True): # no scale needed; size is pre-determined for the sake of the game
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width), int(height)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.enabled = enabled
+
+    def draw(self, screen):
+        if self.enabled:
+            screen.blit(self.image, (self.rect.x, self.rect.y))
+
+    def enable(self, boolean : bool):
+        self.enabled = boolean
+
 class Scene:
-    def __init__(self, /,*, background, interactions=[], items=[], overlays=[], name=""):
+    def __init__(self, /,*, background, interactions=[], items=[], overlays=dict(), name=""):
         self.background = background
         self.interactions = interactions
         self.items = items
@@ -57,6 +73,12 @@ Scenes = {
                 cursor = "Right",
             ),
         ],
+        overlays = {
+            "SilverKey" : Overlay(72, 663, pygame.image.load('Images/Scenes/Main1/SilverKey.png'), True),
+            "SilverLock" : Overlay(364, 491, pygame.image.load('Images/Scenes/Main1/SilverLock.png'), True),
+            "GoldLock" : Overlay(919, 467, pygame.image.load('Images/Scenes/Main1/GoldLock.png'), True),
+            "Wire" : Overlay(0, 0, pygame.image.load('Images/Scenes/Main1/Wire.png'), False),
+        }
     ),
     "Right_Room" : Scene(
         background = pygame.image.load('Images/Scenes/Main2/Scene.png'),
