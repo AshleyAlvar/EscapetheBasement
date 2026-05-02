@@ -214,6 +214,9 @@ Scenes = {
                 cursor = "Back",
             ),
         ],
+        overlays = {
+            "SilverLock" : Overlay(825, 410, pygame.image.load('Images/Scenes/Cabinet/SilverLock.png'), True),
+        },
     ),
     "Behind_Cabinet" : Scene(
         background = pygame.image.load('Images/Scenes/Cabinet/BehindCabinet.png'),
