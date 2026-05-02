@@ -95,3 +95,14 @@ class Vent_Transition(Transition):
         else:
             game.switch_scene(self.scene)
             game.hover(pos)
+
+class Item_Interaction(Interaction):
+    def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2)
+        self.type = "Item"
+        self.cursor = cursor
+        self.text = text
+        self.item = "" # WIP
+    
+    def mouse_down(self, game, pos):
+        pass

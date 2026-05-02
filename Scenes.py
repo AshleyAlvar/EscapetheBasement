@@ -105,6 +105,10 @@ Scenes = {
                 scene = "Calendar",
                 text = "Calendar",
             ),
+            Interactions.Item_Interaction(1047,374,67,165,
+                cursor = "Hand",
+                text = "Broom",
+            ),
 
             Interactions.Transition(0,0,100,825, # LEFT
                 scene = "Front_Room",
@@ -140,6 +144,10 @@ Scenes = {
                 scene = "Front_Cabinet",
                 text = "Cabinet",
             ),
+            Interactions.Item_Interaction(438,373,57,133,
+                cursor = "Hand",
+                text = "Broom",
+            ),
 
             Interactions.Transition(0,0,100,825, # LEFT
                 scene = "Right_Room",
@@ -174,6 +182,10 @@ Scenes = {
                 scene = "Vent",
                 text = "Vent",
             ),
+            Interactions.Item_Interaction(541,384,74,128,
+                cursor = "Hand",
+                text = "Chair",
+            ),
 
             Interactions.Transition(0,0,100,825, # LEFT
                 scene = "Back_Room",
@@ -193,6 +205,10 @@ Scenes = {
     "Front_Cabinet" : Scene(
         background = pygame.image.load('Images/Scenes/Cabinet/Scene.png'),
         interactions = [
+            Interactions.Item_Interaction(95,91,341,424,
+                cursor = "Hand",
+                text = "Chair",
+            ),
             Interactions.Transition(0,625,1466,200,
                 scene = "Previous",
                 cursor = "Back",
