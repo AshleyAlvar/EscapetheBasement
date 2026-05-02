@@ -18,6 +18,7 @@ class TipBar:
         self.rect = pygame.Rect(0,825-size, 1466,size)
         self.text = ''
         self.font = pygame.font.Font(None, 25)
+        self.forcedText = None
     
     def draw(self):
         pygame.draw.rect(self.screen, self.color, self.rect, 0)
@@ -27,6 +28,10 @@ class TipBar:
             self.screen.blit(text_surface, text_rect)
     
     def change_text(self, text):
+        self.text = text
+
+    def force_text(self, text):
+        self.forcedText = self.Text
         self.text = text
 
 
@@ -84,7 +89,7 @@ class Game:
         cursor = ""
         text = ""
         for interact in self.scene.interactions:
-            if interact.is_clicked(pos) and interact.cursor != "":
+            if interact.is_clicked(pos) and interact.enabled == True and interact.cursor != "":
                 cursor = interact.cursor
                 text = interact.text
                 break
@@ -93,7 +98,8 @@ class Game:
         else:
             pygame.mouse.set_cursor(self.cursors[cursor])
 
-        if self.tipbar.text != text:
+        if self.tipbar.text != text and (self.tipbar.forcedText == None or (self.tipbar.text != self.tipbar.ForcedText and self.tipbar.text != "")):
+            self.tipbar.ForcedText = None
             self.tipbar.change_text(text)
 
     def clicked(self, pos):
@@ -108,12 +114,19 @@ class Game:
                 break
         if not clicked:
             self.hotbar.handle_click(pos)
+            
         # INTERACTIONS
+        result = None
         for interact in self.scene.interactions:
-            if not clicked and interact.is_clicked(pos):
-                if interact.type == "Transition":
-                    self.switch_scene(interact.scene)
-                    self.hover(pos)
-                    clicked = True
+            if not clicked and interact.is_clicked(pos) and interact.enabled == True:
+                result = interact.mouse_down(self, pos) # sending itself actually works
+                clicked = True
                 break
 
+    def released(self, pos):
+        # INTERACTIONS
+        for interact in self.scene.interactions:
+            if interact.is_clicked(pos) and interact.enabled == True:
+                print("ok")
+                result = interact.mouse_up(self, pos)
+                break

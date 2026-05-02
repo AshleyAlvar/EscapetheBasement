@@ -43,6 +43,10 @@ Scenes = {
                 scene = "TrashBin",
                 text = "Trash Bin",
             ),
+            Interactions.Locked_Transition(321,219,70,72,
+                scene = "Vent",
+                text = "Vent",
+            ),
 
             Interactions.Transition(0,0,100,825, # LEFT
                 scene = "Left_Room",
@@ -136,6 +140,10 @@ Scenes = {
             Interactions.Transition(1188,355,153,109,
                 scene = "Power",
                 text = "Powerbox",
+            ),
+            Interactions.Locked_Transition(863,254,85,52,
+                scene = "Vent",
+                text = "Vent",
             ),
 
             Interactions.Transition(0,0,100,825, # LEFT

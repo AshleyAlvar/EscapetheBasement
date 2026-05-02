@@ -166,6 +166,7 @@ def handle_game_events(event):
                 game_scene.clicked(event.pos)
         mouseDown = True
     elif event.type == pygame.MOUSEBUTTONUP:
+        game_scene.released(event.pos)
         mouseDown = False
     elif event.type == pygame.MOUSEMOTION:
         if settingsButton.is_clicked(event.pos) or volumeButton.is_clicked(event.pos):
