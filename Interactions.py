@@ -97,6 +97,39 @@ class Vent_Transition(Transition):
             game.switch_scene(self.scene)
             game.hover(pos)
 
+class Cabinet(Interaction):
+    def __init__(self, x, y, x2, y2, secondary, overlay, priority):
+        super().__init__(x, y, x2, y2)
+        self.rect2 = pygame.Rect(secondary[0], secondary[1], secondary[2], secondary[3])
+        self.overlay = overlay
+        self.priority = priority
+        self.cursor = "Hand"
+        self.expanded = False
+
+    def is_clicked(self, pos):
+        if self.expanded:
+            return self.rect2.collidepoint(pos)
+        else:
+            return self.rect.collidepoint(pos)
+    
+    def mouse_down(self, game, pos):
+        self.expanded = not self.expanded
+        for key,overlay in game.scene.overlays.items():
+            if key != "Wire":
+                if self.expanded:
+                    overlay.enabled = (key in self.overlay)
+                else:
+                    overlay.enabled = (not "_Open" in key)
+
+        for cabinet in game.scene.interactions:
+            if isinstance(cabinet,Cabinet) and cabinet != self:
+                cabinet.expanded = False
+                if cabinet.priority > self.priority:
+                    cabinet.enabled = not self.expanded
+                    
+        game.hover(pos)
+
+
 #
 
 class Item_Interaction(Interaction):
