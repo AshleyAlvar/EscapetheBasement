@@ -107,11 +107,19 @@ class Game:
     def hover(self, pos):
         cursor = ""
         text = ""
-        for interact in self.scene.interactions:
-            if interact.is_clicked(pos) and interact.enabled == True and interact.cursor != "":
-                cursor = interact.cursor
-                text = interact.text
+        for i, slot in enumerate(self.hotbar.slots):
+            if slot.rect.collidepoint(pos) and slot.item is not None:
+                cursor = "Hand"
+                text = slot.item.name
                 break
+
+        if text == "":
+            for interact in self.scene.interactions:
+                if interact.is_clicked(pos) and interact.enabled == True and interact.cursor != "":
+                    cursor = interact.cursor
+                    text = interact.text
+                    break
+
         if cursor == "":
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         else:
@@ -132,7 +140,14 @@ class Game:
                 clicked = True
                 break
         if not clicked:
+            previous = self.hotbar.selected
             clicked = self.hotbar.handle_click(pos)
+            if clicked:
+                if self.hotbar.selected != None:
+                    self.tipbar.force_text("Selected " + self.hotbar.selected + ".")
+                else:
+                    self.tipbar.forcedText = None
+                    self.tipbar.change_text(previous)
         
         if clicked:
             return
