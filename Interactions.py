@@ -77,6 +77,13 @@ class Image_Interaction:
 
 # derived classes
 
+class Text(Interaction):
+    def __init__(self, x, y, x2, y2, *, text=""):
+        super().__init__(x, y, x2, y2)
+        self.type = "Text"
+        self.cursor = "Default"
+        self.text = text
+
 class Transition(Interaction):
     def __init__(self, x, y, x2, y2, *, scene: str, cursor="Front", text=""):
         super().__init__(x, y, x2, y2)
@@ -145,31 +152,53 @@ class Cabinet(Interaction):
             if key != "Wire":
                 overlay.enabled = (not "_Open" in key)
 
-class Screwdriver_Cabinet(Cabinet):
-    def __init__(self, x, y, x2, y2, secondary, overlay, priority):
+class Item_Cabinet(Cabinet):
+    def __init__(self, x, y, x2, y2, secondary, overlay, priority, item):
         super().__init__(x, y, x2, y2, secondary, overlay, priority)
+        self.item = item
     
     def update(self, game):
-        game.items["Flathead Screwdriver"].visible = self.expanded
+        game.items[self.item].visible = self.expanded
 
-class Wire_Cabinet(Cabinet):
-    def __init__(self, x, y, x2, y2, secondary, overlay, priority):
-        super().__init__(x, y, x2, y2, secondary, overlay, priority)
+class Silver_Locked_Cabinet(Item_Cabinet):
+    def __init__(self, x, y, x2, y2, secondary, overlay, priority, item):
+        super().__init__(x, y, x2, y2, secondary, overlay, priority, item)
     
     def mouse_down(self, game, pos):
         if game.hotbar.selected == "Silver Key" and game.items["Silver Key"].collected:
             game.hotbar.remove_item("Silver Key")
-            game.variables["Safe_Locked"] = False
+            game.variables["Silver_Locked"] = False
             game.tipbar.force_text("Opened locked cabinet.")
-            game.scene.overlays["SilverLock"].removed = True
 
-        if game.variables["Safe_Locked"] == True:
+            game.scene.overlays["SilverLock"].removed = True
+            game.scenes["Front_Room"].overlays["SilverLock"].enabled = False
+            game.scenes["Back_Room"].overlays["SilverLock"].enabled = False
+            game.scenes["Left_Room"].overlays["SilverLock"].enabled = False
+
+        if game.variables["Silver_Locked"] == True:
             game.tipbar.force_text("This cabinet is locked.")
         else:
             super().mouse_down(game, pos)
+
+class Gold_Locked_Cabinet(Item_Cabinet):
+    def __init__(self, x, y, x2, y2, secondary, overlay, priority, item):
+        super().__init__(x, y, x2, y2, secondary, overlay, priority, item)
     
-    def update(self, game):
-        game.items["Laptop Charger"].visible = self.expanded
+    def mouse_down(self, game, pos):
+        if game.hotbar.selected == "Gold Key" and game.items["Gold Key"].collected:
+            game.hotbar.remove_item("Gold Key")
+            game.variables["Gold_Locked"] = False
+            game.tipbar.force_text("Opened locked cabinet.")
+
+            game.scene.overlays["GoldLock"].removed = True
+            game.scenes["Front_Room"].overlays["GoldLock"].enabled = False
+            game.scenes["Right_Room"].overlays["GoldLock"].enabled = False
+            game.scenes["Left_Room"].overlays["GoldLock"].enabled = False
+
+        if game.variables["Gold_Locked"] == True:
+            game.tipbar.force_text("This cabinet is locked.")
+        else:
+            super().mouse_down(game, pos)
 
 #
 
