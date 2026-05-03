@@ -220,6 +220,8 @@ Scenes = {
                 cursor = "Hand",
                 text = "Chair",
             ),
+            Interactions.Chair_Place_Interaction(853,362,127,159, # [INDEX 5; DO NOT MOVE]
+            ),
 
             Interactions.Transition(0,0,100,825, # LEFT
                 scene = "Back_Room",

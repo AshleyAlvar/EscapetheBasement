@@ -89,7 +89,10 @@ class Vent_Transition(Transition):
     
     def mouse_down(self, game, pos):
         if game.variables["Placed_Chair"] == False:
-            game.tipbar.force_text("Can't seem to reach the vent from this height. You'll need something to stand on to get there.")
+            if game.hotbar.selected == "Chair" and game.items["Chair"].collected:
+                game.tipbar.force_text("Tapping the vent with a chair doesn't seem to do anything. Maybe place it UNDER the vent.")
+            else:
+                game.tipbar.force_text("Can't seem to reach the vent from this height. You'll need something to stand on to get there.")
         else:
             game.switch_scene(self.scene)
             game.hover(pos)
@@ -129,6 +132,7 @@ class Chair_Interaction(Item_Interaction):
                 game.scenes["Back_Room"].change_bg(pygame.image.load('Images/Scenes/Main3/NoBroomNChair.png'))
             else:
                 game.scenes["Back_Room"].change_bg(pygame.image.load('Images/Scenes/Main3/NoChair.png'))
+            game.scenes["Left_Room"].interactions[5].enabled = True # hardcoded
 
 class Broom_Interaction(Item_Interaction):
     def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
@@ -144,6 +148,22 @@ class Broom_Interaction(Item_Interaction):
                 game.scenes["Back_Room"].change_bg(pygame.image.load('Images/Scenes/Main3/NoBroom.png'))
             game.scenes["Poster"].overlays["Broom"].enabled = False
             game.scenes["Poster_Removed"].overlays["Broom"].enabled = False
+
+class Chair_Place_Interaction(Interaction):
+    def __init__(self, x, y, x2, y2):
+        super().__init__(x, y, x2, y2)
+        self.type = "Place"
+        self.cursor = "Default"
+        self.enabled = False
+    
+    def mouse_down(self, game, pos):
+        if game.hotbar.selected == "Chair" and game.items["Chair"].collected:
+            game.hotbar.remove_item("Chair")
+            game.variables["Placed_Chair"] = True
+            game.scenes["Front_Room"].change_bg(pygame.image.load('Images/Scenes/Main1/ChairMoved.png'))
+            game.scenes["Left_Room"].change_bg(pygame.image.load('Images/Scenes/Main4/MovedChair.png'))
+            game.tipbar.force_text("Placed the chair under the vent. Now we can reach it!")
+            self.enabled = False
 
 #
 

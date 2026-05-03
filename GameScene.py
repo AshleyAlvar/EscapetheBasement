@@ -9,6 +9,7 @@ game_cursors = {
     "Front" : pygame.cursors.Cursor((50, 50), pygame.image.load("Images/Others/CursorFront.png").convert_alpha()),
     "Back" : pygame.cursors.Cursor((50, 50), pygame.image.load("Images/Others/CursorBack.png").convert_alpha()),
     "Hand" : pygame.SYSTEM_CURSOR_HAND,
+    "Default" : pygame.SYSTEM_CURSOR_ARROW,
 }
 
 class TipBar:
