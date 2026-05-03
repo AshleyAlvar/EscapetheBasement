@@ -103,10 +103,7 @@ class Vent_Transition(Transition):
             else:
                 game.tipbar.force_text("Can't seem to reach the vent from this height. You'll need something to stand on to get there.")
         else:
-            for interaction in game.scene.interactions:
-                interaction.off_scene(game)
-            game.switch_scene(self.scene)
-            game.hover(pos)
+            super().mouse_down(game, pos)
 
 class Cabinet(Interaction):
     def __init__(self, x, y, x2, y2, secondary, overlay, priority):
@@ -154,7 +151,26 @@ class Screwdriver_Cabinet(Cabinet):
     
     def update(self, game):
         game.items["Flathead Screwdriver"].visible = self.expanded
-        
+
+class Wire_Cabinet(Cabinet):
+    def __init__(self, x, y, x2, y2, secondary, overlay, priority):
+        super().__init__(x, y, x2, y2, secondary, overlay, priority)
+    
+    def mouse_down(self, game, pos):
+        if game.hotbar.selected == "Silver Key" and game.items["Silver Key"].collected:
+            game.hotbar.remove_item("Silver Key")
+            game.variables["Safe_Locked"] = False
+            game.tipbar.force_text("Opened locked cabinet.")
+            game.scene.overlays["SilverLock"].removed = True
+
+        if game.variables["Safe_Locked"] == True:
+            game.tipbar.force_text("This cabinet is locked.")
+        else:
+            super().mouse_down(game, pos)
+    
+    def update(self, game):
+        game.items["Laptop Charger"].visible = self.expanded
+
 #
 
 class Item_Interaction(Interaction):

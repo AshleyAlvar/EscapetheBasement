@@ -9,9 +9,10 @@ class Overlay:
         self.image = pygame.transform.scale(image, (int(width), int(height)))
         self.rect = self.image.get_rect(topleft=(x, y))
         self.enabled = enabled
+        self.removed = False # just a super version (for locks)
 
     def draw(self, screen):
-        if self.enabled:
+        if self.enabled and not self.removed:
             screen.blit(self.image, (self.rect.x, self.rect.y))
 
     def enable(self, boolean : bool):
@@ -255,6 +256,11 @@ Scenes = {
                 overlay = {"Cabinet1", "Cabinet2_Open"},
                 priority = 2,
             ),
+            Interactions.Wire_Cabinet(563,396,341,167,
+                [470,632, 520,163],
+                overlay = {"Cabinet1", "Cabinet2", "Cabinet3_Open"},
+                priority = 3,
+            ),
             Interactions.Transition(0,625,1466,200,
                 scene = "Previous",
                 cursor = "Back",
@@ -266,6 +272,7 @@ Scenes = {
             "Cabinet2" : Overlay(0, 0, pygame.image.load('Images/Scenes/Cabinet/Cabinet2.png'), True),
             "Cabinet2_Open" : Overlay(0, 0, pygame.image.load('Images/Scenes/Cabinet/Cabinet2Open.png'), False),
             "Cabinet3" : Overlay(0, 0, pygame.image.load('Images/Scenes/Cabinet/Cabinet3.png'), True),
+            "Cabinet3_Open" : Overlay(0, 0, pygame.image.load('Images/Scenes/Cabinet/Cabinet3Open.png'), False),
             "SilverLock" : Overlay(875, 410, pygame.image.load('Images/Scenes/Cabinet/SilverLock.png'), True),
         },
     ),
