@@ -49,7 +49,7 @@ class Game:
         self.items = deepcopy(Scenes.Items)
         self.scene = self.scenes["Front_Room"] # where to draw from specifically
 
-        self.hotbar = Hotbar(490, 680, 75, 6, self.slot_img)
+        self.hotbar = Hotbar(445, 680, 75, 7, self.slot_img)
         self.tick = 0
         self.previous = "Front_Room"
         self.has_clicked = []

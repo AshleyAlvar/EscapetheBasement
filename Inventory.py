@@ -62,7 +62,7 @@ class Hotbar:
     
     def handle_click(self, mouse_pos):
         for i, slot in enumerate(self.slots):
-            if slot.rect.collidepoint(mouse_pos):
+            if slot.rect.collidepoint(mouse_pos) and slot.item is not None:
                 self.selected_index = i if self.selected_index != i else None
                 self.selected = slot.item.name if self.selected != slot.item.name else None
                 return True
