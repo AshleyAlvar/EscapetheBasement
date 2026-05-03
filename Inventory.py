@@ -64,7 +64,7 @@ class Hotbar:
         for i, slot in enumerate(self.slots):
             if slot.rect.collidepoint(mouse_pos):
                 self.selected_index = i if self.selected_index != i else None
-                self.selected = slot.name if self.selected != slot.name else None
+                self.selected = slot.item.name if self.selected != slot.item.name else None
                 return True
         return False
     

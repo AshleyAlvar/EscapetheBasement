@@ -94,16 +94,58 @@ class Vent_Transition(Transition):
             game.switch_scene(self.scene)
             game.hover(pos)
 
+#
+
 class Item_Interaction(Interaction):
     def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
         super().__init__(x, y, x2, y2)
         self.type = "Item"
         self.cursor = cursor
-        self.text = text
-        self.item = "" # WIP
+        self.text = text # contary to others, this one is important (item)
     
     def mouse_down(self, game, pos):
-        pass
+        item = game.items[self.text]
+        if item.collected:
+            return False
+        if game.hotbar.add_item(item):
+            item.collected = True
+            self.visible = False
+            self.enabled = False
+            game.hover(pos)
+            game.tipbar.force_text("Acquired " + item.name + ".")
+            return True
+
+class Chair_Interaction(Item_Interaction):
+    def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, cursor=cursor, text=text)
+
+    def mouse_down(self, game, pos):
+        confirm = super().mouse_down(game, pos)
+        if confirm == True:
+            game.scenes["Front_Room"].change_bg(pygame.image.load('Images/Scenes/Main1/NoChair.png'))
+            game.scenes["Left_Room"].change_bg(pygame.image.load('Images/Scenes/Main4/NoChair.png'))
+            game.scenes["Front_Cabinet"].change_bg(pygame.image.load('Images/Scenes/Cabinet/NoChair.png'))
+            if game.items["Broom"].collected == True:
+                game.scenes["Back_Room"].change_bg(pygame.image.load('Images/Scenes/Main3/NoBroomNChair.png'))
+            else:
+                game.scenes["Back_Room"].change_bg(pygame.image.load('Images/Scenes/Main3/NoChair.png'))
+
+class Broom_Interaction(Item_Interaction):
+    def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, cursor=cursor, text=text)
+
+    def mouse_down(self, game, pos):
+        confirm = super().mouse_down(game, pos)
+        if confirm == True:
+            game.scenes["Right_Room"].change_bg(pygame.image.load('Images/Scenes/Main2/NoBroom.png'))
+            if game.items["Chair"].collected == True:
+                game.scenes["Back_Room"].change_bg(pygame.image.load('Images/Scenes/Main3/NoBroomNChair.png'))
+            else:
+                game.scenes["Back_Room"].change_bg(pygame.image.load('Images/Scenes/Main3/NoBroom.png'))
+            game.scenes["Poster"].overlays["Broom"].enabled = False
+            game.scenes["Poster_Removed"].overlays["Broom"].enabled = False
+
+#
 
 class Safe_Button(Image_Interaction):
     def __init__(self, x, y, image, scale, *, input, clicked_image):

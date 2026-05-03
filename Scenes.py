@@ -18,10 +18,9 @@ class Overlay:
         self.enabled = boolean
 
 class Scene:
-    def __init__(self, /,*, background, interactions=[], items=[], overlays=dict(), name=""):
+    def __init__(self, /,*, background, interactions=[], overlays=dict(), name=""):
         self.background = background
         self.interactions = interactions
-        self.items = items
         self.overlays = overlays
         self.name = name # only reserved for main 1 to 4
 
@@ -140,7 +139,7 @@ Scenes = {
                 scene = "Calendar",
                 text = "Calendar",
             ),
-            Interactions.Item_Interaction(1047,374,67,165,
+            Interactions.Broom_Interaction(1047,374,67,165,
                 cursor = "Hand",
                 text = "Broom",
             ),
@@ -179,7 +178,7 @@ Scenes = {
                 scene = "Front_Cabinet",
                 text = "Cabinet",
             ),
-            Interactions.Item_Interaction(438,373,57,133,
+            Interactions.Broom_Interaction(438,373,57,133,
                 cursor = "Hand",
                 text = "Broom",
             ),
@@ -217,7 +216,7 @@ Scenes = {
                 scene = "Vent",
                 text = "Vent",
             ),
-            Interactions.Item_Interaction(541,384,74,128,
+            Interactions.Chair_Interaction(541,384,74,128,
                 cursor = "Hand",
                 text = "Chair",
             ),
@@ -240,7 +239,7 @@ Scenes = {
     "Front_Cabinet" : Scene(
         background = pygame.image.load('Images/Scenes/Cabinet/Scene.png'),
         interactions = [
-            Interactions.Item_Interaction(95,91,341,424,
+            Interactions.Chair_Interaction(95,91,341,424,
                 cursor = "Hand",
                 text = "Chair",
             ),
@@ -370,6 +369,7 @@ Scenes = {
             ),
             Interactions.Transition(882,653,50,50,
                 scene = "Poster_Removed",
+                cursor = "Hand",
             ),
             Interactions.Transition(0,725,1466,100,
                 scene = "Previous",

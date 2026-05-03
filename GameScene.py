@@ -1,6 +1,7 @@
 import pygame
 from Inventory import Hotbar
 import Scenes
+from copy import deepcopy
 
 game_cursors = {
     "Left" : pygame.cursors.Cursor((50, 50), pygame.image.load("Images/Others/CursorLeft.png").convert_alpha()),
@@ -37,16 +38,17 @@ class TipBar:
 class Game:
 
     # class variable
-    scenes = Scenes.Scenes
     slot_img = pygame.image.load('Images/hotbarslot.png')
     cursors = game_cursors
 
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 40)
+
+        self.scenes = deepcopy(Scenes.Scenes) # upon creation, deep copy the following so that the initial tables do not affected; makes way for when the game resets
+        self.items = deepcopy(Scenes.Items)
         self.scene = self.scenes["Front_Room"] # where to draw from specifically
 
-        self.items = Scenes.Items
         self.hotbar = Hotbar(490, 680, 75, 6, self.slot_img)
         self.tick = 0
         self.previous = "Front_Room"
