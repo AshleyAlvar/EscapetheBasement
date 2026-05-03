@@ -125,10 +125,8 @@ class Cabinet(Interaction):
             if isinstance(cabinet,Cabinet) and cabinet != self:
                 cabinet.expanded = False
                 if cabinet.priority > self.priority:
-                    cabinet.enabled = not self.expanded
-                    
+                    cabinet.enabled = not self.expanded        
         game.hover(pos)
-
 
 #
 
@@ -150,6 +148,15 @@ class Item_Interaction(Interaction):
             game.hover(pos)
             game.tipbar.force_text("Acquired " + item.name + ".")
             return True
+
+class SilverKey_Interaction(Item_Interaction):
+    def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, cursor=cursor, text=text)
+
+    def mouse_down(self, game, pos):
+        confirm = super().mouse_down(game, pos)
+        if confirm == True:
+            game.scenes["Behind_Cabinet"].change_bg(pygame.image.load('Images/Scenes/Cabinet/BehindCabinet_NoKey.png'))
 
 class Chair_Interaction(Item_Interaction):
     def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):

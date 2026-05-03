@@ -272,6 +272,10 @@ Scenes = {
     "Behind_Cabinet" : Scene(
         background = pygame.image.load('Images/Scenes/Cabinet/BehindCabinet.png'),
         interactions = [
+            Interactions.SilverKey_Interaction(837,364,100,100,
+                cursor = "Hand",
+                text = "Silver Key",
+            ),
             Interactions.Transition(0,575,1466,250,
                 scene = "Previous",
                 cursor = "Back",
