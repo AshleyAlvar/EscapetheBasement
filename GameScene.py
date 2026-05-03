@@ -82,6 +82,8 @@ class Game:
         for interact in self.scene.interactions:
             if interact.visible == True:
                 interact.draw(self.screen)
+            if interact.updateOnTick:
+                interact.update(self)
 
         for key,item in self.items.items():
             item.draw(self.screen)
@@ -108,11 +110,19 @@ class Game:
     def hover(self, pos):
         cursor = ""
         text = ""
-        for i, slot in enumerate(self.hotbar.slots):
-            if slot.rect.collidepoint(pos) and slot.item is not None:
+
+        for key,item in self.items.items():
+            if not item.collected and item.visible and item.is_clicked(pos):
                 cursor = "Hand"
-                text = slot.item.name
+                text = item.name
                 break
+
+        if text == "":
+            for i, slot in enumerate(self.hotbar.slots):
+                if slot.rect.collidepoint(pos) and slot.item is not None:
+                    cursor = "Hand"
+                    text = slot.item.name
+                    break
 
         if text == "":
             for interact in self.scene.interactions:
@@ -122,7 +132,7 @@ class Game:
                     break
 
         if cursor == "":
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+            pygame.mouse.set_cursor(self.cursors["Default"])
         else:
             pygame.mouse.set_cursor(self.cursors[cursor])
 
@@ -138,8 +148,11 @@ class Game:
             if not item.collected and item.visible and item.is_clicked(pos):
                 if self.hotbar.add_item(item):
                     item.collected = True
+                    self.tipbar.force_text("Acquired " + item.name + ".")
+                    self.hover(pos)
                 clicked = True
                 break
+            
         if not clicked:
             previous = self.hotbar.selected
             clicked = self.hotbar.handle_click(pos)

@@ -23,6 +23,9 @@ class Interaction:
 
     def update(self, game):
         pass
+
+    def off_scene(self, game):
+        pass
     
 class Image_Interaction:
     def __init__(self, x, y, image, scale):
@@ -69,6 +72,9 @@ class Image_Interaction:
     def update(self, game):
         pass
 
+    def off_scene(self, game):
+        pass
+
 # derived classes
 
 class Transition(Interaction):
@@ -80,6 +86,9 @@ class Transition(Interaction):
         self.scene = scene # scene name (string)
 
     def mouse_down(self, game, pos):
+        for interaction in game.scene.interactions:
+            interaction.off_scene(game)
+
         game.switch_scene(self.scene)
         game.hover(pos)
 
@@ -94,6 +103,8 @@ class Vent_Transition(Transition):
             else:
                 game.tipbar.force_text("Can't seem to reach the vent from this height. You'll need something to stand on to get there.")
         else:
+            for interaction in game.scene.interactions:
+                interaction.off_scene(game)
             game.switch_scene(self.scene)
             game.hover(pos)
 
@@ -121,13 +132,29 @@ class Cabinet(Interaction):
                 else:
                     overlay.enabled = (not "_Open" in key)
 
+        self.update(game)
         for cabinet in game.scene.interactions:
             if isinstance(cabinet,Cabinet) and cabinet != self:
                 cabinet.expanded = False
                 if cabinet.priority > self.priority:
-                    cabinet.enabled = not self.expanded        
+                    cabinet.enabled = not self.expanded  
+                cabinet.update(game)      
         game.hover(pos)
+    
+    def off_scene(self, game):
+        self.expanded = False
+        self.enabled = True
+        for key,overlay in game.scene.overlays.items():
+            if key != "Wire":
+                overlay.enabled = (not "_Open" in key)
 
+class Screwdriver_Cabinet(Cabinet):
+    def __init__(self, x, y, x2, y2, secondary, overlay, priority):
+        super().__init__(x, y, x2, y2, secondary, overlay, priority)
+    
+    def update(self, game):
+        game.items["Flathead Screwdriver"].visible = self.expanded
+        
 #
 
 class Item_Interaction(Interaction):

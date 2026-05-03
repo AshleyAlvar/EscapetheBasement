@@ -250,7 +250,7 @@ Scenes = {
                 overlay = {"Cabinet1_Open"},
                 priority = 1,
             ),
-            Interactions.Cabinet(539,297,379,87,
+            Interactions.Screwdriver_Cabinet(539,297,379,87,
                 [352,587, 743,140],
                 overlay = {"Cabinet1", "Cabinet2_Open"},
                 priority = 2,
