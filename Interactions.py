@@ -229,6 +229,7 @@ class SilverKey_Interaction(Item_Interaction):
         confirm = super().mouse_down(game, pos)
         if confirm == True:
             game.scenes["Behind_Cabinet"].change_bg(pygame.image.load('Images/Scenes/Cabinet/BehindCabinet_NoKey.png'))
+            game.scenes["Front_Room"].overlays["SilverKey"].enabled = False
 
 class Chair_Interaction(Item_Interaction):
     def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):

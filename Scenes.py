@@ -74,6 +74,15 @@ Scenes = {
                 cursor = "Back",
                 text = "Cabinet?",
             ),
+            Interactions.Transition(0,0,100,825, # LEFT
+                scene = "Left_Room",
+                cursor = "Left",
+            ),
+            Interactions.Transition(1466-100,0,100,825, # RIGHT
+                scene = "Right_Room",
+                cursor = "Right",
+            ),
+            
             Interactions.Transition(43,404,334,262,
                 scene = "Front_Cabinet",
                 text = "Cabinet",
@@ -97,15 +106,6 @@ Scenes = {
             Interactions.Vent_Transition(321,219,70,72,
                 scene = "Vent",
                 text = "Vent",
-            ),
-
-            Interactions.Transition(0,0,100,825, # LEFT
-                scene = "Left_Room",
-                cursor = "Left",
-            ),
-            Interactions.Transition(1466-100,0,100,825, # RIGHT
-                scene = "Right_Room",
-                cursor = "Right",
             ),
         ],
         overlays = {
