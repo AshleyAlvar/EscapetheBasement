@@ -59,6 +59,7 @@ class Game:
 
         self.variables = {
             "Placed_Chair" : False,
+            "Charger_Plugged" : False,
             "Gold_Locked" : True,
             "Silver_Locked" : True,
             "Vent_Screws" : 4,

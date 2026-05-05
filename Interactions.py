@@ -116,6 +116,26 @@ class Vent_Transition(Transition):
         else:
             super().mouse_down(game, pos)
 
+class Laptop_Transition(Transition):
+    def __init__(self, x, y, x2, y2, *, scene: str, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, scene = scene, cursor = cursor, text = text)
+    
+    def mouse_down(self, game, pos):
+        if game.variables["Charger_Plugged"] == False:
+            if game.hotbar.selected == "Laptop Charger" and game.items["Laptop Charger"].collected:
+                game.hotbar.remove_item("Laptop Charger")
+                game.variables["Charger_Plugged"] = True
+                game.scenes["Front_Room"].overlays["Wire"].enabled = True
+                game.scenes["Right_Room"].overlays["Wire"].enabled = True
+                game.scenes["Desk"].overlays["Wire"].enabled = True
+                game.tipbar.force_text("Plugged the charger into the laptop.")
+            else:
+                game.tipbar.force_text("You can't seem to turn the laptop on.")
+        else:
+            super().mouse_down(game, pos)
+
+#
+
 class Cabinet(Interaction):
     def __init__(self, x, y, x2, y2, secondary, overlay, priority):
         super().__init__(x, y, x2, y2)
@@ -245,6 +265,8 @@ class GoldKey_Interaction(Item_Interaction):
             confirm = super().mouse_down(game, pos)
             if confirm == True:
                 game.scenes["Vent_Removed"].overlays["GoldKey"].enabled = False
+        elif game.hotbar.selected == "Hammer":
+            game.tipbar.force_text("Even with a trusty hammer were you still unable to reach the key. It's a lot farther down there than expected.")
         elif game.hotbar.selected != None:
             game.tipbar.force_text("Doesn't seem to help get the key.")
         else:

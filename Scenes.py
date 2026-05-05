@@ -301,7 +301,7 @@ Scenes = {
                 scene = "TrashBin",
                 text = "Trash Bin",
             ),
-            Interactions.Transition(677,108,226,173,
+            Interactions.Laptop_Transition(677,108,226,173,
                 scene = "Laptop",
                 text = "Laptop",
             ),
