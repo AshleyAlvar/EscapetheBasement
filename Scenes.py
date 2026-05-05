@@ -473,6 +473,10 @@ Scenes = {
             Interactions.Screw(1068,570,
                 type = "Flathead"
             ),
+            Interactions.Vent_Interaction(417,255,633,316,
+                scene = "Vent_Removed",
+                cursor = "Hand",
+            ),
 
             Interactions.Transition(0,650,1466,175,
                 scene = "Previous",
@@ -487,6 +491,31 @@ Scenes = {
                 cursor = "Right",
             ),
         ],
+    ),
+    "Vent_Removed" : Scene(
+        background = pygame.image.load('Images/Scenes/Vent/Open.png'),
+        interactions = [
+            Interactions.GoldKey_Interaction(699,472,50,50,
+                cursor = "Hand",
+                text = "Gold Key",
+            ),
+
+            Interactions.Transition(0,650,1466,175,
+                scene = "Previous",
+                cursor = "Back",
+            ),
+            Interactions.Transition(0,0,200,825,
+                scene = "Previous",
+                cursor = "Left",
+            ),
+            Interactions.Transition(1266,0,200,825,
+                scene = "Previous",
+                cursor = "Right",
+            ),
+        ],
+        overlays = {
+            "GoldKey" : Overlay(712, 494, pygame.image.load('Images/Scenes/Vent/GoldKey.png'), True),
+        },
     ),
     # ---
     "Calendar" : Scene(

@@ -69,6 +69,8 @@ class Game:
             
             "Correct_Code1" : "1227",
             "Correct_Code2" : "C36926510_DY",
+
+            "Debounce" : 0,
         }
 
     def draw_game(self, delta : float = 0):
@@ -83,7 +85,7 @@ class Game:
             if interact.visible == True:
                 interact.draw(self.screen)
             if interact.updateOnTick:
-                interact.update(self)
+                interact.update(self,delta)
 
         for key,item in self.items.items():
             item.draw(self.screen)

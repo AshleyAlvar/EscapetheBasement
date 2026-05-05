@@ -23,7 +23,7 @@ class Interaction:
     def mouse_up(self, game, pos):
         pass
 
-    def update(self, game):
+    def update(self, game, delta=0):
         pass
 
     def off_scene(self, game):
@@ -73,7 +73,7 @@ class Image_Interaction:
     def mouse_up(self, game, pos):
         pass
 
-    def update(self, game):
+    def update(self, game, delta=0):
         pass
 
     def off_scene(self, game):
@@ -161,7 +161,7 @@ class Item_Cabinet(Cabinet):
         super().__init__(x, y, x2, y2, secondary, overlay, priority)
         self.item = item
     
-    def update(self, game):
+    def update(self, game, delta=0):
         game.items[self.item].visible = self.expanded
 
 class Silver_Locked_Cabinet(Item_Cabinet):
@@ -235,6 +235,21 @@ class SilverKey_Interaction(Item_Interaction):
             game.scenes["Behind_Cabinet"].change_bg(pygame.image.load('Images/Scenes/Cabinet/BehindCabinet_NoKey.png'))
             game.scenes["Front_Room"].overlays["SilverKey"].enabled = False
 
+class GoldKey_Interaction(Item_Interaction):
+    def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, cursor=cursor, text=text)
+
+    def mouse_down(self, game, pos):
+        if game.hotbar.selected == "Broom" and game.items["Broom"].collected:
+            game.hotbar.remove_item("Broom")
+            confirm = super().mouse_down(game, pos)
+            if confirm == True:
+                game.scenes["Vent_Removed"].overlays["GoldKey"].enabled = False
+        elif game.hotbar.selected != None:
+            game.tipbar.force_text("Doesn't seem to help get the key.")
+        else:
+            game.tipbar.force_text("Key is too far to reach! There should be something long enough to get it from this distance.")
+
 class Chair_Interaction(Item_Interaction):
     def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
         super().__init__(x, y, x2, y2, cursor=cursor, text=text)
@@ -290,6 +305,7 @@ class Screw(Interaction):
         size = 15
         super().__init__(x-gap, y-gap, size+(gap*2), size+(gap*2))
 
+        self.type = type
         image = type == "Phillips" and pygame.image.load('Images/Others/phillipsScrew.png') or pygame.image.load('Images/Others/flatheadScrew.png')
         self.image = pygame.transform.scale(image, (int(size), int(size)))
         self.center = (x+7, y+7)
@@ -297,15 +313,58 @@ class Screw(Interaction):
         self.cursor = "Hand"
         self.requires_tool = True
         self.visible = True
+        self.tick = -1
 
     def draw(self, screen):
         rotated_image = pygame.transform.rotate(self.image, self.angle)
         rect = rotated_image.get_rect(center=self.center)
         #pygame.draw.rect(screen, (255,0,0), self.rect) DEBUG
         screen.blit(rotated_image, rect)
+
+    def update(self, game, delta=0):
+        if self.tick < 0:
+            return
+        self.tick += delta
+        if self.tick < 1.5:
+            self.angle = 360 * self.tick
+        else:
+            self.tick = -1
+            self.angle = 0
+            image = pygame.image.load('Images/Others/screwHole.png')
+            self.image = pygame.transform.scale(image, (15,15))
+
+            if self.type == "Flathead":
+                game.variables["Vent_Screws"] -= 1
+            elif self.type == "Phillips":
+                game.variables["Powerbox_Screws"] -= 1
+            game.variables["Debounce"] -= 1
+            self.updateOnTick = False
     
     def mouse_down(self, game, pos):
-        print("OK")
+        required = self.type + " Screwdriver"
+        if game.hotbar.selected == required and game.items[required].collected:
+            self.tick = 0
+            self.updateOnTick = True
+            game.tipbar.force_text("Unscrewed the screw.")
+            game.variables["Debounce"] += 1
+            self.enabled = False
+            game.hover(pos)
+        elif (required == "Flathead Screwdriver" and game.hotbar.selected == "Phillips Screwdriver") or (required == "Phillips Screwdriver" and game.hotbar.selected == "Flathead Screwdriver"):
+            game.tipbar.force_text("This screwdriver doesn't seem to fit. You'll need a different one for it.")
+        else:
+            game.tipbar.force_text("This doesn't seem to fit.")
+
+class Vent_Interaction(Transition):
+    def __init__(self, x, y, x2, y2, *, scene: str, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, scene = scene, cursor = cursor, text = text)
+    
+    def mouse_down(self, game, pos):
+        if game.variables["Vent_Screws"] > 0:
+            if game.variables["Debounce"] > 0:
+                return
+            game.tipbar.force_text("This vent won't budge.")
+        else:
+            super().mouse_down(game, pos)
 
 class Safe_Button(Image_Interaction):
     def __init__(self, x, y, image, scale, *, input, clicked_image):

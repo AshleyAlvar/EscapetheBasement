@@ -83,7 +83,7 @@ def displayMenu():
 def play_music(str):
     str = f'Audio/{str}.ogg'
     pygame.mixer.music.load(str) # Audio/universfield-ominous-tones.mp3
-    pygame.mixer.music.play(-1, 0.0, 0)
+    #pygame.mixer.music.play(-1, 0.0, 0) TEMPORARY
 
 play_music("MenuTheme")
 
