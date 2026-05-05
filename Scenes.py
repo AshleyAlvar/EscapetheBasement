@@ -403,6 +403,19 @@ Scenes = {
     "Power" : Scene(
         background = pygame.image.load('Images/Scenes/Power/Scene.png'),
         interactions = [
+            Interactions.Screw(462,242,
+                type = "Phillips"
+            ),
+            Interactions.Screw(989,242,
+                type = "Phillips"
+            ),
+            Interactions.Screw(462,568,
+                type = "Phillips"
+            ),
+            Interactions.Screw(989,568,
+                type = "Phillips"
+            ),
+
             Interactions.Transition(0,625,1466,200,
                 scene = "Previous",
                 cursor = "Back",
@@ -448,6 +461,19 @@ Scenes = {
     "Vent" : Scene(
         background = pygame.image.load('Images/Scenes/Vent/Scene.png'),
         interactions = [
+            Interactions.Screw(384,240,
+                type = "Flathead"
+            ),
+            Interactions.Screw(1068,240,
+                type = "Flathead"
+            ),
+            Interactions.Screw(384,570,
+                type = "Flathead"
+            ),
+            Interactions.Screw(1068,570,
+                type = "Flathead"
+            ),
+
             Interactions.Transition(0,650,1466,175,
                 scene = "Previous",
                 cursor = "Back",

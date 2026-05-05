@@ -127,6 +127,8 @@ class Game:
         if text == "":
             for interact in self.scene.interactions:
                 if interact.is_clicked(pos) and interact.enabled == True and interact.cursor != "":
+                    if interact.requires_tool == True and self.hotbar.selected == None:
+                        continue
                     cursor = interact.cursor
                     text = interact.text
                     break
@@ -169,6 +171,8 @@ class Game:
         result = None
         for interact in self.scene.interactions:
             if not clicked and interact.is_clicked(pos) and interact.enabled == True:
+                if interact.requires_tool == True and self.hotbar.selected == None:
+                    continue
                 result = interact.mouse_down(self, pos) # sending itself actually works
                 self.has_clicked.append(interact)
                 clicked = True

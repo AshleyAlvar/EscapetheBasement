@@ -11,6 +11,8 @@ class Interaction:
         self.visible = False
         self.updateOnTick = False
         self.enabled = True
+        
+        self.requires_tool = False
 
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
@@ -41,6 +43,8 @@ class Image_Interaction:
         self.visible = True
         self.updateOnTick = False
         self.enabled = True
+
+        self.requires_tool = False
     
     def draw(self, screen):
         action = False
@@ -279,6 +283,29 @@ class Chair_Place_Interaction(Interaction):
             self.enabled = False
 
 #
+
+class Screw(Interaction):
+    def __init__(self, x, y, type):
+        gap = 10
+        size = 15
+        super().__init__(x-gap, y-gap, size+(gap*2), size+(gap*2))
+
+        image = type == "Phillips" and pygame.image.load('Images/Others/phillipsScrew.png') or pygame.image.load('Images/Others/flatheadScrew.png')
+        self.image = pygame.transform.scale(image, (int(size), int(size)))
+        self.center = (x+7, y+7)
+        self.angle = 0 # in degrees
+        self.cursor = "Hand"
+        self.requires_tool = True
+        self.visible = True
+
+    def draw(self, screen):
+        rotated_image = pygame.transform.rotate(self.image, self.angle)
+        rect = rotated_image.get_rect(center=self.center)
+        #pygame.draw.rect(screen, (255,0,0), self.rect) DEBUG
+        screen.blit(rotated_image, rect)
+    
+    def mouse_down(self, game, pos):
+        print("OK")
 
 class Safe_Button(Image_Interaction):
     def __init__(self, x, y, image, scale, *, input, clicked_image):

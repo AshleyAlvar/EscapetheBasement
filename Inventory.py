@@ -28,7 +28,10 @@ class Item:
                 screen.blit(self.image, self.rect)
 
     def is_clicked(self, pos):
-        return self.rect.collidepoint(pos)
+        if self.bg_image != None:
+            return self.bg_rect.collidepoint(pos)
+        else:
+            return self.rect.collidepoint(pos)
 
 class InventorySlot:
     def __init__(self, x, y, size, slot_img=None):
@@ -58,7 +61,7 @@ class Hotbar:
             self.slots.append(InventorySlot(slot_x, y, slot_size, slot_img))
 
         self.selected_index = None
-        self.selected = ""
+        self.selected = None
     
     def handle_click(self, mouse_pos):
         for i, slot in enumerate(self.slots):
