@@ -29,11 +29,11 @@ class Scene:
         self.background = background
 
 Items = {
-    "Flathead Screwdriver" : Item(618,362, pygame.image.load("Images/Items/flathead_screwdriver.png").convert_alpha(), 1,
+    "Flathead Screwdriver" : Item(618,362, pygame.image.load("Images/Items/flatheadScrewdriver.png").convert_alpha(), 1,
         name = "Flathead Screwdriver",
         bg_image = pygame.image.load("Images/Scenes/Cabinet/Screwdriver.png").convert_alpha(),
     ),
-    "Phillips Screwdriver" : Item(0,0, pygame.image.load("Images/Items/phillips_screwdriver.png").convert_alpha(), 1,
+    "Phillips Screwdriver" : Item(0,0, pygame.image.load("Images/Items/phillipsScrewdriver.png").convert_alpha(), 1,
         name = "Phillips Screwdriver",
     ),
     "Hammer" : Item(578,421, pygame.image.load("Images/Items/hammer.png").convert_alpha(), 1,
