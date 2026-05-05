@@ -61,6 +61,9 @@ Items = {
     "Broom" : Item(0,0, pygame.image.load("Images/Items/broom.png").convert_alpha(), 1,
         name = "Broom",
     ),
+    "Notes" : Item(0,0, pygame.image.load("Images/Items/paper.png").convert_alpha(), 1,
+        name = "Notes",
+    ),
 }
 
 Scenes = {
@@ -334,6 +337,7 @@ Scenes = {
     "Safe" : Scene(
         background = pygame.image.load('Images/Scenes/Safe/Scene.png'),
         interactions = [
+            Interactions.Safe_Code(737,330,123,35), # INDEX 0 (DO NOT MOVE)
             Interactions.Safe_Button(734, 377, pygame.image.load('Images/Scenes/Safe/Button1.png'), 1,
                 input = 1,
                 clicked_image = pygame.image.load('Images/Scenes/Safe/Button1Clicked.png'),
@@ -382,6 +386,34 @@ Scenes = {
                 input = "#",
                 clicked_image = pygame.image.load('Images/Scenes/Safe/Button#Clicked.png'),
             ),
+            Interactions.Safe_Transition(496,336,49,186,
+                scene = "Safe_Opened",
+            ),
+            
+            Interactions.Transition(0,725,1466,100,
+                scene = "Previous",
+                cursor = "Back",
+            ),
+            Interactions.Transition(0,0,1466,100,
+                scene = "Previous",
+            ),
+            Interactions.Transition(0,0,200,825,
+                scene = "Previous",
+                cursor = "Left",
+            ),
+            Interactions.Transition(1266,0,200,825,
+                scene = "Previous",
+                cursor = "Right",
+            ),
+        ],
+    ),
+    "Safe_Opened" : Scene(
+        background = pygame.image.load('Images/Scenes/Safe/Open.png'),
+        interactions = [       
+            Interactions.Paper_Interaction(660,519,129,56,
+                cursor = "Hand",
+                text = "Notes",
+            ),
 
             Interactions.Transition(0,725,1466,100,
                 scene = "Previous",
@@ -399,6 +431,9 @@ Scenes = {
                 cursor = "Right",
             ),
         ],
+        overlays = {
+            "Paper" : Overlay(0, 0, pygame.image.load('Images/Scenes/Safe/Paper.png'), True),
+        },
     ),
     "Power" : Scene(
         background = pygame.image.load('Images/Scenes/Power/Scene.png'),

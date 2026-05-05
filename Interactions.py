@@ -134,6 +134,16 @@ class Laptop_Transition(Transition):
         else:
             super().mouse_down(game, pos)
 
+class Safe_Transition(Transition):
+    def __init__(self, x, y, x2, y2, *, scene: str, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, scene = scene, cursor = cursor, text = text)
+    
+    def mouse_down(self, game, pos):
+        if game.variables["Safe_Locked"] == True:
+            game.tipbar.force_text("The safe is locked.")
+        else:
+            super().mouse_down(game, pos)
+
 #
 
 class Cabinet(Interaction):
@@ -342,6 +352,15 @@ class Wall_Interaction(Item_Interaction):
             if confirm == True:
                 game.scenes["Poster_Removed"].change_bg(pygame.image.load('Images/Scenes/Poster/BrokenWall.png'))
 
+class Paper_Interaction(Item_Interaction):
+    def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, cursor=cursor, text=text)
+
+    def mouse_down(self, game, pos):
+        confirm = super().mouse_down(game, pos)
+        if confirm == True:
+            game.scenes["Safe_Opened"].overlays["Paper"].enabled = False
+
 #
 
 class Screw(Interaction):
@@ -421,6 +440,57 @@ class Safe_Button(Image_Interaction):
     
     def mouse_down(self, game, pos):
         self.new_image(game.screen, image = self.clicked_image)
+        if game.variables["Safe_Locked"]:
+            if self.input == "C":
+                game.variables["Safe_Code"] = ""
+            elif self.input == "#":
+                game.scene.interactions[0].confirm(game)
+            elif len(game.variables["Safe_Code"]) < 4:
+                game.variables["Safe_Code"] += str(self.input)
 
     def mouse_up(self, game, pos):
         self.new_image(game.screen, image = self.initial_image)
+
+class Safe_Code(Interaction):
+    def __init__(self, x, y, x2, y2):
+        super().__init__(x, y, x2, y2)
+        pygame.font.init()
+        #print(pygame.font.get_fonts())
+        self.enabled = False
+        self.tick = -1
+        self.updateOnTick = True
+        self.placeholderText = ""
+
+    def update(self, game, delta=0):
+        if game.variables["Safe_Code"] != "":
+            self.placeholderText = ""
+        font = pygame.font.SysFont('arial', 35, bold=True) # workaround; cannot be pickled
+        color = (190, 237, 47)
+        if self.tick >= 0 and self.tick % 0.1 < 0.05:
+            color = (255, 255, 255)
+            
+        text = font.render(game.variables["Safe_Code"] == "" and self.placeholderText or game.variables["Safe_Code"], True, color)
+        game.screen.blit(text, (self.rect.x, self.rect.y))
+
+        if self.tick >= 0:
+            self.tick += delta
+            if self.tick > 0.5:
+                self.tick = -1
+                game.variables["Debounce"] -= 1
+
+    def confirm(self, game):
+        if game.variables["Debounce"] > 0 or game.variables["Safe_Code"] == "":
+            return
+        elif game.variables["Safe_Code"] == game.variables["Correct_Code1"]:
+            game.variables["Safe_Code"] = ""
+            self.placeholderText = "=)"
+            self.tick = 0
+            game.variables["Debounce"] += 1
+            game.variables["Safe_Locked"] = False
+            game.tipbar.force_text("A click has been made.")
+        else:
+            game.variables["Safe_Code"] = ""
+            self.placeholderText = ">:("
+            self.tick = 0
+            game.variables["Debounce"] += 1
+            game.tipbar.force_text('"INCORRECT"')
