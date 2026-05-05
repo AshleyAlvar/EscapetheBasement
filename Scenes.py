@@ -445,6 +445,10 @@ Scenes = {
     "Poster_Removed" : Scene(
         background = pygame.image.load('Images/Scenes/Poster/NoPoster.png'),
         interactions = [
+            Interactions.Wall_Interaction(583,220,297,384,
+                cursor = "Hand",
+            ),
+
             Interactions.Transition(210,285,246,159,
                 scene = "Calendar",
                 text = "Calendar",

@@ -319,6 +319,29 @@ class Chair_Place_Interaction(Interaction):
             game.tipbar.force_text("Placed the chair under the vent. Now we can reach it!")
             self.enabled = False
 
+class Wall_Interaction(Item_Interaction):
+    def __init__(self, x, y, x2, y2, *, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, cursor=cursor, text=text)
+        self.item = "Phillips Screwdriver"
+
+    def give_item(self, game, pos):
+        item = game.items[self.item]
+        if item.collected:
+            return False
+        if game.hotbar.add_item(item):
+            item.collected = True
+            self.visible = False
+            self.enabled = False
+            game.hover(pos)
+            game.tipbar.force_text("Acquired " + item.name + ".")
+            return True
+    
+    def mouse_down(self, game, pos):
+        if game.hotbar.selected == "Hammer" and game.items["Hammer"].collected:
+            confirm = self.give_item(game, pos)
+            if confirm == True:
+                game.scenes["Poster_Removed"].change_bg(pygame.image.load('Images/Scenes/Poster/BrokenWall.png'))
+
 #
 
 class Screw(Interaction):
