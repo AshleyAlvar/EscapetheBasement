@@ -143,6 +143,7 @@ class Safe_Transition(Transition):
             game.tipbar.force_text("The safe is locked.")
         else:
             super().mouse_down(game, pos)
+            game.tipbar.force_text("")
 
 #
 

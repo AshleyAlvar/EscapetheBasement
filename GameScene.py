@@ -70,6 +70,7 @@ class Game:
             
             "Correct_Code1" : "1227",
             "Correct_Code2" : "C36926510_DY",
+            "Notes" : pygame.transform.scale(pygame.image.load('Images/Others/Notes.png'), (1466, 825)),
 
             "Debounce" : 0,
         }
@@ -93,6 +94,9 @@ class Game:
 
         self.hotbar.draw(self.screen)
         self.tipbar.draw()
+
+        if self.hotbar.selected == "Notes":
+            self.screen.blit(self.variables["Notes"], (0, 0))
 
     def switch_scene(self, scene: str):
         if scene == "Previous":
