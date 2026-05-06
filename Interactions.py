@@ -431,6 +431,22 @@ class Vent_Interaction(Transition):
         else:
             super().mouse_down(game, pos)
 
+class Power_Interaction(Transition):
+    def __init__(self, x, y, x2, y2, *, scene: str, cursor="Front", text=""):
+        super().__init__(x, y, x2, y2, scene = scene, cursor = cursor, text = text)
+        self.first_time = False
+    
+    def mouse_down(self, game, pos):
+        if game.variables["Powerbox_Screws"] > 0:
+            if game.variables["Debounce"] > 0:
+                return
+            game.tipbar.force_text("This powerbox won't open.")
+        else:
+            super().mouse_down(game, pos)
+            if self.first_time == False:
+                self.first_time = True
+                game.tipbar.force_text("What a mess..")
+
 class Safe_Button(Image_Interaction):
     def __init__(self, x, y, image, scale, *, input, clicked_image):
         super().__init__(x, y, image, scale)
@@ -541,7 +557,7 @@ class Laptop_Textbox(Interaction):
         
         if game.variables["Laptop_Prompt"] == game.variables["Correct_Code2"]:
             game.scenes["Laptop"].change_bg(pygame.image.load('Images/Scenes/Laptop/Unlocked.png'))
-            game.scenes["Laptop"].overlays["OffSwitch"].enabled = True
+            game.scenes["Laptop"].overlays["OnSwitch"].enabled = True
             game.scenes["Laptop"].overlays["Incorrect"].enabled = False
             game.scenes["Laptop"].interactions[1].enabled = True
             self.updateOnTick = False
@@ -556,9 +572,41 @@ class Laptop_Switch(Interaction):
         self.enabled = False
         self.cursor = "Hand"
         self.text = '"Door Lock"'
+        self.first_time = False
 
     def mouse_down(self, game, pos):
         game.variables["Door_Lock"] = not game.variables["Door_Lock"]
 
-        game.scenes["Laptop"].overlays["OffSwitch"].enabled = game.variables["Door_Lock"]
-        game.scenes["Laptop"].overlays["OnSwitch"].enabled = not game.variables["Door_Lock"]
+        game.scenes["Laptop"].overlays["OffSwitch"].enabled = not game.variables["Door_Lock"]
+        game.scenes["Laptop"].overlays["OnSwitch"].enabled = game.variables["Door_Lock"]
+
+        if self.first_time == False:
+            self.first_time = True
+            game.tipbar.force_text("Must of did something.")
+
+class Wires(Interaction):
+    def __init__(self, x, y, x2, y2):
+        super().__init__(x, y, x2, y2)
+        self.cursor = "Hand"
+        self.text = "Broken Wires"
+
+    def mouse_down(self, game, pos):
+        if game.hotbar.selected == "Electric Tape" and game.items["Electric Tape"].collected:
+            game.hotbar.remove_item("Electric Tape")
+            self.enabled = False
+            game.scenes["Power_Opened"].overlays["Broken_Wires"].enabled = False
+            game.scenes["Power_Opened"].overlays["Fixed_Wires"].enabled = True
+            game.variables["Powerbox_Fixed"] = True
+
+            self.text = "Fixed Wires"
+            game.tipbar.force_text("Fixed.")
+            game.hover(pos)
+
+class Door(Interaction):
+    def __init__(self, x, y, x2, y2):
+        super().__init__(x, y, x2, y2)
+        self.cursor = "Hand"
+        self.text = "The Door"
+
+    def mouse_down(self, game, pos):
+        pass

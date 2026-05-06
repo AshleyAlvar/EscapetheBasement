@@ -450,12 +450,30 @@ Scenes = {
             Interactions.Screw(989,568,
                 type = "Phillips"
             ),
+            Interactions.Power_Interaction(459,239,548,347,
+                scene = "Power_Opened",
+                cursor = "Hand",
+            ),
 
             Interactions.Transition(0,625,1466,200,
                 scene = "Previous",
                 cursor = "Back",
             ),
         ],
+    ),
+    "Power_Opened" : Scene(
+        background = pygame.image.load('Images/Scenes/Power/Opened.png'),
+        interactions = [
+            Interactions.Wires(620,263,234,265),
+            Interactions.Transition(0,625,1466,200,
+                scene = "Previous",
+                cursor = "Back",
+            ),
+        ],
+        overlays = {
+            "Broken_Wires" : Overlay(0, 0, pygame.image.load('Images/Scenes/Power/BrokenWires.png'), True),
+            "Fixed_Wires" : Overlay(0, 0, pygame.image.load('Images/Scenes/Power/FixedWires.png'), False),
+        },
     ),
     "Poster" : Scene(
         background = pygame.image.load('Images/Scenes/Poster/Scene.png'),

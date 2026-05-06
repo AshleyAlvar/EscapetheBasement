@@ -64,6 +64,7 @@ class Game:
             "Silver_Locked" : True,
             "Vent_Screws" : 4,
             "Powerbox_Screws" : 4,
+            "Powerbox_Fixed" : False,
 
             "Safe_Locked" : True,
             "Safe_Code" : "",
