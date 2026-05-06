@@ -536,4 +536,29 @@ class Laptop_Textbox(Interaction):
         return "Typing"
 
     def confirm(self, game):
-        print("ok")
+        if not game.variables["Door_Lock"]:
+            return
+        
+        if game.variables["Laptop_Prompt"] == game.variables["Correct_Code2"]:
+            game.scenes["Laptop"].change_bg(pygame.image.load('Images/Scenes/Laptop/Unlocked.png'))
+            game.scenes["Laptop"].overlays["OffSwitch"].enabled = True
+            game.scenes["Laptop"].overlays["Incorrect"].enabled = False
+            game.scenes["Laptop"].interactions[1].enabled = True
+            self.updateOnTick = False
+            self.enabled = False
+        else:
+            game.scenes["Laptop"].overlays["Incorrect"].enabled = True
+        game.variables["Laptop_Prompt"] = ""
+
+class Laptop_Switch(Interaction):
+    def __init__(self, x, y, x2, y2):
+        super().__init__(x, y, x2, y2)
+        self.enabled = False
+        self.cursor = "Hand"
+        self.text = '"Door Lock"'
+
+    def mouse_down(self, game, pos):
+        game.variables["Door_Lock"] = not game.variables["Door_Lock"]
+
+        game.scenes["Laptop"].overlays["OffSwitch"].enabled = game.variables["Door_Lock"]
+        game.scenes["Laptop"].overlays["OnSwitch"].enabled = not game.variables["Door_Lock"]

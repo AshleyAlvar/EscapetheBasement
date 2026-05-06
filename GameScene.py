@@ -70,9 +70,10 @@ class Game:
 
             "Laptop_Typing" : False,
             "Laptop_Prompt" : "",
+            "Door_Lock" : True,
             
             "Correct_Code1" : "1227",
-            "Correct_Code2" : "C36926510_DY",
+            "Correct_Code2" : "C36926510DY",
             "Notes" : pygame.transform.scale(pygame.image.load('Images/Others/Notes.png'), (1466, 825)),
 
             "Debounce" : 0,
@@ -209,7 +210,9 @@ class Game:
             self.variables["Laptop_Prompt"] = self.variables["Laptop_Prompt"][:-1]
             self.variables["Backspace"] = True
         elif len(self.variables["Laptop_Prompt"]) < 20 and event.key != pygame.K_BACKSPACE:
-            self.variables["Laptop_Prompt"] += event.unicode
+            char = event.unicode
+            if char.isascii():
+                self.variables["Laptop_Prompt"] += event.unicode
 
     def key_released(self, event):
         self.variables["Backspace"] = False

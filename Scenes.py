@@ -594,7 +594,8 @@ Scenes = {
     "Laptop" : Scene(
         background = pygame.image.load('Images/Scenes/Laptop/Scene.png'),
         interactions = [
-            Interactions.Laptop_Textbox(614,405,238,26),
+            Interactions.Laptop_Textbox(614,405,238,26), # INDEX 0 (do not move)
+            Interactions.Laptop_Switch(330,231,62,27), # INDEX 1 (do not move)
 
             Interactions.Transition(0,750,1466,75,
                 scene = "Previous",
@@ -611,6 +612,8 @@ Scenes = {
         ],
         overlays = {
             "Incorrect" : Overlay(0, 0, pygame.image.load('Images/Scenes/Laptop/IncorrectPrompt.png'), False),
+            "OffSwitch" : Overlay(331, 232, pygame.image.load('Images/Scenes/Laptop/OffSwitch.png'), False),
+            "OnSwitch" : Overlay(331, 232, pygame.image.load('Images/Scenes/Laptop/OnSwitch.png'), False),
         },
     ),
     "TrashBin" : Scene(
