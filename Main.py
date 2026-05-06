@@ -29,12 +29,12 @@ current_Volume = volume_on
 mouseClick = pygame.mixer.Sound('Audio/MouseClick.mp3')
 
 settings_icon = pygame.image.load('Images/settings.png').convert_alpha()
-settings_Menu = pygame.image.load('Images/settingMenu.png')
+settings_Menu = pygame.image.load('Images/settingsmenu.png')
 resume_icon = pygame.image.load('Images/Resume.png').convert_alpha()
 mainMenu = pygame.image.load('Images/MainMenu.png').convert_alpha()
 settingsButton = Image_Button(1466-230, 10, settings_icon, 1)
-resumeButton = Image_Button(608, 300, resume_icon, 1)
-mainMenuButton = Image_Button(608, 425, mainMenu, 1)
+resumeButton = Image_Button(450, 300, resume_icon, 1)
+mainMenuButton = Image_Button(450, 500, mainMenu, 1)
 
 slot_img = pygame.image.load('Images/hotbarslot.png')
 
@@ -64,7 +64,7 @@ def settingsMenu():
     overlay.fill((0, 0, 0))
     screen.blit(overlay, (0, 0))
 
-    screen.blit(settings_Menu, (573, 200))
+    screen.blit(settings_Menu, (0, 0))
     resumeButton.draw()
     mainMenuButton.draw()
 
