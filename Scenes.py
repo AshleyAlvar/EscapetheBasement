@@ -597,6 +597,16 @@ Scenes = {
     "Clock" : Scene(
         background = pygame.image.load('Images/Scenes/ClockScene.png'),
         interactions = [
+            Interactions.Clock_Hand(560,239,
+                image = pygame.image.load('Images/Others/clockMinutes.png'),
+                cycle = 60,
+            ),
+            Interactions.Clock_Hand(560,239,
+                image = pygame.image.load('Images/Others/clockHours.png'),
+                cycle = 12*60,
+                offset = 60,
+            ),
+
             Interactions.Transition(0,700,1466,125,
                 scene = "Previous",
                 cursor = "Back",

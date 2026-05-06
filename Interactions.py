@@ -364,6 +364,24 @@ class Paper_Interaction(Item_Interaction):
 
 #
 
+class Clock_Hand(Interaction):
+    def __init__(self, x, y, image, cycle, offset=0):
+        size = 347
+        super().__init__(x, y, size, size)
+        self.image = pygame.transform.scale(image, (int(size), int(size)))
+        self.center = (x+173, y+173)
+        self.enabled = False
+        self.updateOnTick = True
+        self.cycle = cycle
+        self.offset = offset
+
+    def update(self, game, delta=0):
+        tick = int(game.tick)
+        angle = ((tick + self.offset) / self.cycle) * 360
+        rotated_image = pygame.transform.rotozoom(self.image, -angle, 1)
+        rect = rotated_image.get_rect(center=self.center)
+        game.screen.blit(rotated_image, rect)
+
 class Screw(Interaction):
     def __init__(self, x, y, type):
         gap = 10
