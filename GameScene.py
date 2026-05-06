@@ -3,6 +3,8 @@ from Inventory import Hotbar
 import Scenes
 from copy import deepcopy
 
+from EndingScene import Ending
+
 game_cursors = {
     "Left" : pygame.cursors.Cursor((50, 50), pygame.image.load("Images/Others/CursorLeft.png").convert_alpha()),
     "Right" : pygame.cursors.Cursor((50, 50), pygame.image.load("Images/Others/CursorRight.png").convert_alpha()),
@@ -45,6 +47,7 @@ class Game:
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 40)
+        self.ending = Ending(screen)
 
         self.scenes = deepcopy(Scenes.Scenes) # upon creation, deep copy the following so that the initial tables do not affected; makes way for when the game resets
         self.items = deepcopy(Scenes.Items)
@@ -80,6 +83,7 @@ class Game:
             "Debounce" : 0,
             "Backspace" : False,
         }
+        self.Win = False
 
     def draw_game(self, delta : float = 0):
         self.tick += delta
@@ -217,3 +221,10 @@ class Game:
 
     def key_released(self, event):
         self.variables["Backspace"] = False
+
+    def win_screen(self, event):
+        pygame.mouse.set_cursor(self.cursors["Default"])
+        self.ending.draw_ending(self)
+        if self.ending.handle_events(event) == True:
+            return "Menu"
+        return None

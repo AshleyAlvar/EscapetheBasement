@@ -611,7 +611,7 @@ class Door(Interaction):
 
     def mouse_down(self, game, pos):
         if self.opened:
-            print("EPIC WIN")
+            game.Win = True
         else:
             if game.variables["Powerbox_Fixed"] and not game.variables["Door_Lock"]:
                 self.opened = True

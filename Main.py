@@ -5,8 +5,6 @@ from IntroScene import Intro
 from GameScene import Game
 from Inventory import Hotbar
 from Inventory import Item
-from EndingScene import Ending
-
 
 pygame.init()
 
@@ -81,10 +79,13 @@ def displayMenu():
         #key.draw(screen)
         #key2.draw(screen)
 
+music_playing = ""
 def play_music(str):
+    global music_playing
+    music_playing = str
     str = f'Audio/{str}.ogg'
     pygame.mixer.music.load(str) # Audio/universfield-ominous-tones.mp3
-    #pygame.mixer.music.play(-1, 0.0, 0) #TEMPORARY
+    pygame.mixer.music.play(-1, 0.0, 0) #TEMPORARY
 
 play_music("MenuTheme")
 
@@ -117,8 +118,7 @@ gameState = "Menu"
 
 intro_scene = Intro(screen)
 game_scene = Game(screen) # ensure that we can reset this in the future
-ending_scene = Ending(screen)
-gameState = "Menu"
+#ending_scene = Ending(screen)
 
 # handlers
 
@@ -142,7 +142,22 @@ def handle_menu_events(event):
         mouseDown = False
 
 def handle_game_events(event):
-    global mouseDown, settingsOpen, gameState, current_background
+    global mouseDown, settingsOpen, gameState, current_background, game_scene
+    if game_scene.Win:
+        result = game_scene.win_screen(event)
+
+        global music_playing
+        if music_playing != "MenuTheme":
+            play_music("MenuTheme")
+
+        if result == "Menu":
+            gameState = "Menu"
+            current_background = menuBackground
+
+            del game_scene # reset the game
+            game_scene = Game(screen)
+        return
+
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
         if not mouseDown:
             if volumeButton.is_clicked(event.pos):
@@ -161,6 +176,9 @@ def handle_game_events(event):
                     gameState = "Menu"
                     current_background = menuBackground
                     play_music("MenuTheme")
+                    
+                    del game_scene # reset the game
+                    game_scene = Game(screen)
             else:
                 game_scene.clicked(event.pos)
         mouseDown = True
@@ -205,24 +223,15 @@ while running:
                 current_background = gameBackground
         elif gameState == "Game":
             handle_game_events(event)
-        elif gameState == "Ending":
-            new_scene = ending_scene.handle_events(event)
-            if new_scene:
-                game_scene = new_scene
-                gameState = "Game"
-                current_background = gameBackground
-         
-    updateScreen()
-    if gameState == "Intro":
-        intro_scene.draw_intro()
-    elif gameState == "Game":
-        game_scene.draw_game(delta_time_ms / 1000)
-    elif gameState == "Ending":
-        ending_scene.draw_ending()
-
-
-    displayMenu()
-    update_hover()
+        
+    if not game_scene.Win:
+        updateScreen()
+        if gameState == "Intro":
+            intro_scene.draw_intro()
+        elif gameState == "Game":
+            game_scene.draw_game(delta_time_ms / 1000)
+        displayMenu()
+        update_hover()
 
     if settingsOpen:
         settingsMenu()

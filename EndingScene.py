@@ -1,24 +1,26 @@
 import pygame
-from GameScene import Game
 
 class Ending:
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 40)
-        self.text = "Congratulations! You've escaped the basement! Want to play again? Press Enter to restart."
 
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                return Game(self.screen)
-            elif event.type == pygame.QUIT:
-                pygame.quit()
-                return None
-
+                return True
         return None
     
-    def draw_ending(self):
+    def draw_ending(self, game):
         self.screen.fill('black')
-        ending_text = self.font.render(self.text, True, (255, 255, 255))
-        ending_rect = ending_text.get_rect(center=(640, 360))
-        self.screen.blit(ending_text, ending_rect)
+        text = self.font.render("Congratulations! You've escaped the basement!", True, (255, 255, 255))
+        rect = text.get_rect(center=(1466/2, (825/2) - 75))
+        self.screen.blit(text, rect)
+
+        text = self.font.render("You took " + str(int(game.tick)) + " seconds to beat the game.", True, (255, 255, 255))
+        rect = text.get_rect(center=(1466/2, 825/2))
+        self.screen.blit(text, rect)
+
+        text = self.font.render("Press ENTER to back to the menu.", True, (255, 255, 255))
+        rect = text.get_rect(center=(1466/2, (825/2) + 75))
+        self.screen.blit(text, rect)
