@@ -219,7 +219,7 @@ while running:
             new_scene = intro_scene.handle_events(event)
             if new_scene:
                 game_scene = new_scene
-                gameState = "Game"
+                gameState = "Intro"
                 current_background = gameBackground
         elif gameState == "Game":
             handle_game_events(event)
