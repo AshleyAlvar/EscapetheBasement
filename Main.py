@@ -131,7 +131,9 @@ def handle_menu_events(event):
                 toggle_volume()
             elif play_button.is_clicked(event.pos):
                 click()
-                gameState = "Game" # Intro
+                global intro_scene
+                intro_scene.tick = 0
+                gameState = "Intro"
                 play_music("GameTheme")
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
             elif quit_button.is_clicked(event.pos):
@@ -216,18 +218,17 @@ while running:
         if gameState == "Menu":
             handle_menu_events(event)
         elif gameState == "Intro":
-            new_scene = intro_scene.handle_events(event)
-            if new_scene:
-                game_scene = new_scene
-                gameState = "Intro"
-                current_background = gameBackground
+            intro_scene.handle_events(event)
         elif gameState == "Game":
             handle_game_events(event)
         
     if not game_scene.Win:
         updateScreen()
         if gameState == "Intro":
-            intro_scene.draw_intro()
+            result = intro_scene.draw_intro(delta_time_ms / 1000)
+            if result:
+                gameState = "Game"
+                #current_background = gameBackground
         elif gameState == "Game":
             game_scene.draw_game(delta_time_ms / 1000)
         displayMenu()
