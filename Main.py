@@ -167,6 +167,10 @@ def handle_game_events(event):
     elif event.type == pygame.MOUSEBUTTONUP:
         game_scene.released(event.pos)
         mouseDown = False
+    elif event.type == pygame.KEYDOWN:
+        game_scene.typed(event)
+    elif event.type == pygame.KEYUP:
+        game_scene.key_released(event)
     elif event.type == pygame.MOUSEMOTION:
         if settingsButton.is_clicked(event.pos) or volumeButton.is_clicked(event.pos):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)

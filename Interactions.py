@@ -495,3 +495,45 @@ class Safe_Code(Interaction):
             self.tick = 0
             game.variables["Debounce"] += 1
             game.tipbar.force_text('"INCORRECT"')
+
+class Laptop_Textbox(Interaction):
+    def __init__(self, x, y, x2, y2):
+        super().__init__(x, y, x2, y2)
+        pygame.font.init()
+        self.updateOnTick = True
+        self.tick = 0
+        self.cursor = "Hand"
+        self.hold_tick = 0
+        self.backspace_tick = 0
+    
+    def update(self, game, delta=0):
+        if game.variables["Laptop_Typing"] == True:
+            self.tick += delta
+            if self.tick >= 1:
+                self.tick -= 1
+            
+            if game.variables["Backspace"] == True: # just to make holding backspace a thing (not gonna program holding other keys)
+                self.hold_tick += delta
+                if self.hold_tick > 0.5:
+                    self.backspace_tick += delta
+                    if self.backspace_tick > 0.05:
+                        self.backspace_tick -= 0.05
+                        game.variables["Laptop_Prompt"] = game.variables["Laptop_Prompt"][:-1]
+            else:
+                self.hold_tick = 0
+                self.backspace_tick = 0
+        else:
+            self.tick = 0
+        text = game.variables["Laptop_Prompt"] + ((self.tick < 0.5 and game.variables["Laptop_Typing"]) and "_" or "")
+        font = pygame.font.SysFont('arial', 22) # workaround; cannot be pickled
+        color = (255, 255, 255)
+
+        rendered_text = font.render(text, True, color)
+        game.screen.blit(rendered_text, (self.rect.x, self.rect.y))
+
+    def mouse_down(self, game, pos):
+        game.variables["Laptop_Typing"] = True
+        return "Typing"
+
+    def confirm(self, game):
+        print("ok")

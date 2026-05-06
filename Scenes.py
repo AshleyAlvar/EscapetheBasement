@@ -592,8 +592,10 @@ Scenes = {
         ],
     ),
     "Laptop" : Scene(
-        background = pygame.image.load('Images/Scenes/LaptopScene.png'),
+        background = pygame.image.load('Images/Scenes/Laptop/Scene.png'),
         interactions = [
+            Interactions.Laptop_Textbox(614,405,238,26),
+
             Interactions.Transition(0,750,1466,75,
                 scene = "Previous",
                 cursor = "Back",
@@ -607,6 +609,9 @@ Scenes = {
                 cursor = "Right",
             ),
         ],
+        overlays = {
+            "Incorrect" : Overlay(0, 0, pygame.image.load('Images/Scenes/Laptop/IncorrectPrompt.png'), False),
+        },
     ),
     "TrashBin" : Scene(
         background = pygame.image.load('Images/Scenes/TrashBinScene.png'),

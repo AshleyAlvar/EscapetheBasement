@@ -67,12 +67,16 @@ class Game:
 
             "Safe_Locked" : True,
             "Safe_Code" : "",
+
+            "Laptop_Typing" : False,
+            "Laptop_Prompt" : "",
             
             "Correct_Code1" : "1227",
             "Correct_Code2" : "C36926510_DY",
             "Notes" : pygame.transform.scale(pygame.image.load('Images/Others/Notes.png'), (1466, 825)),
 
             "Debounce" : 0,
+            "Backspace" : False,
         }
 
     def draw_game(self, delta : float = 0):
@@ -185,6 +189,9 @@ class Game:
                 clicked = True
                 break
 
+        if self.variables["Laptop_Typing"] == True and result != "Typing": # hardcode
+            self.variables["Laptop_Typing"] = False
+
     def released(self, pos):
         # INTERACTIONS
         for interact in self.has_clicked: # added so that players wouldn't slide out of said action
@@ -192,3 +199,17 @@ class Game:
                 result = interact.mouse_up(self, pos)
                 break
         self.has_clicked.clear()
+
+    def typed(self, event):
+        if not self.variables["Laptop_Typing"]:
+            return
+        if event.key == pygame.K_RETURN and len(self.variables["Laptop_Prompt"]) > 0:
+            self.scene.interactions[0].confirm(self)
+        elif event.key == pygame.K_BACKSPACE and len(self.variables["Laptop_Prompt"]) > 0:
+            self.variables["Laptop_Prompt"] = self.variables["Laptop_Prompt"][:-1]
+            self.variables["Backspace"] = True
+        elif len(self.variables["Laptop_Prompt"]) < 20 and event.key != pygame.K_BACKSPACE:
+            self.variables["Laptop_Prompt"] += event.unicode
+
+    def key_released(self, event):
+        self.variables["Backspace"] = False
