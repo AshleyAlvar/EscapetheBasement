@@ -110,6 +110,8 @@ Scenes = {
                 scene = "Vent",
                 text = "Vent",
             ),
+            
+            Interactions.Door(524,312,101,182),
         ],
         overlays = {
             "SilverKey" : Overlay(72, 663, pygame.image.load('Images/Scenes/Main1/SilverKey.png'), True),

@@ -607,6 +607,23 @@ class Door(Interaction):
         super().__init__(x, y, x2, y2)
         self.cursor = "Hand"
         self.text = "The Door"
+        self.opened = False
 
     def mouse_down(self, game, pos):
-        pass
+        if self.opened:
+            print("EPIC WIN")
+        else:
+            if game.variables["Powerbox_Fixed"] and not game.variables["Door_Lock"]:
+                self.opened = True
+                game.scenes["Front_Room"].change_bg(pygame.image.load('Images/Scenes/Main1/DoorOpened.png'))
+                game.tipbar.force_text("You opened the door.")
+            elif game.hotbar.selected == "Hammer":
+                game.tipbar.force_text("This door seems too strong to even try to break down.")
+            elif game.variables["Powerbox_Fixed"] and game.variables["Door_Lock"]:
+                game.tipbar.force_text("The door still won't open. It seems that even while you fixed the powerbox, there's still something preventing it from opening.")
+            elif not game.variables["Powerbox_Fixed"] and not game.variables["Door_Lock"]:
+                game.tipbar.force_text("The door still won't open. It seems that something is broken with the mechanism.")
+            elif game.hotbar.selected != None:
+                game.tipbar.force_text("This won't do anything.")
+            else:
+                game.tipbar.force_text("The door won't open.")
