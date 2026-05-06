@@ -160,7 +160,7 @@ class Game:
             self.tipbar.change_text(text)
 
     def clicked(self, pos):
-        print(pos) # debug
+        #print(pos) # debug
         # ITEMS
         clicked = False
         for key,item in self.items.items():

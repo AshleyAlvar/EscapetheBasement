@@ -485,6 +485,8 @@ class Safe_Code(Interaction):
         color = (190, 237, 47)
         if self.tick >= 0 and self.tick % 0.1 < 0.05:
             color = (255, 255, 255)
+        elif self.placeholderText == ">:(":
+            color = (255, 0, 0)
             
         text = font.render(game.variables["Safe_Code"] == "" and self.placeholderText or game.variables["Safe_Code"], True, color)
         game.screen.blit(text, (self.rect.x, self.rect.y))
