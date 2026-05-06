@@ -12,7 +12,8 @@ pygame.init()
 
 screen = pygame.display.set_mode((1466, 825)) # 1280, 720 (changed size again since all the other scenes were in this resolution)
 pygame.display.set_caption("Escape the Basement")
-#menuTitle = pygame.image.load('Images/EtBTitle.png')
+gameIcon = pygame.image.load('Images/icon.png')
+pygame.display.set_icon(gameIcon)
 clock = pygame.time.Clock()
 
 menuBackground = pygame.image.load('Images/MainMenuBg.png')
@@ -83,7 +84,7 @@ def displayMenu():
 def play_music(str):
     str = f'Audio/{str}.ogg'
     pygame.mixer.music.load(str) # Audio/universfield-ominous-tones.mp3
-    pygame.mixer.music.play(-1, 0.0, 0) #TEMPORARY
+    #pygame.mixer.music.play(-1, 0.0, 0) #TEMPORARY
 
 play_music("MenuTheme")
 
