@@ -225,6 +225,7 @@ while running:
     if not game_scene.Win:
         updateScreen()
         if gameState == "Intro":
+            mouseDown = False
             result = intro_scene.draw_intro(delta_time_ms / 1000)
             if result:
                 gameState = "Game"
